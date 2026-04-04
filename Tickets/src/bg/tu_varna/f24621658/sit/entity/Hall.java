@@ -1,76 +1,67 @@
 package bg.tu_varna.f24621658.sit.entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Hall {
-    private int number;
-    private int rows;
-    private int seatsPerRows;
-    private boolean[][] seats;
+    private final int number;
+    private final List<Row> rows;
 
-    public Hall(int number, int rows, int seatsPerRows) {
-        this.number = number;
-        this.rows = rows;
-        this.seatsPerRows = seatsPerRows;
-
-        for(boolean[] row : seats){
-            Arrays.fill(row, false);
+    public Hall(int number) {
+        if(number <=0) {
+            throw new IllegalArgumentException("Invalid hall number");
         }
+        this.number = number;
+        this.rows = new ArrayList<Row>();
     }
 
     public int getNumber() {
         return number;
     }
 
-    public int getRows() {
-        return rows;
+    public void addRow(int seatsCount) {
+        int nextRowNumber = rows.size() + 1;
+        rows.add(new Row(nextRowNumber, seatsCount));
     }
 
-    public int getSeatsPerRows() {
-        return seatsPerRows;
+    public int getRowsCount() {
+        return rows.size();
     }
 
-
-
-    public boolean isSeatFree(int row,int seat){
-        validateSeat(row,seat);
-        return !seats[row-1][seat-1];
-
+    public Row getRow(int rowNumber) {
+        validateRow(rowNumber);
+        return rows.get(rowNumber - 1);
     }
 
-    public void occupySeat(int row,int seat){
-        validateSeat(row,seat);
-        seats[row-1][seat-1] = true;
+    public boolean isSeatFree(int rowNumber, int seatNumber) {
+        return getRow(rowNumber).isSeatFree(seatNumber);
     }
 
-    public void freeSeat(int row,int seat){
-        validateSeat(row,seat);
-        seats[row-1][seat-1] = false;
+    public void occupySeat(int rowNumber, int seatNumber) {
+        getRow(rowNumber).occupySeat(seatNumber);
     }
 
-    private void validateSeat(int row,int seat){
-        if(row<1 || row>rows){
-            throw new IllegalArgumentException("Invalid row number");
-        }else if(seat<1 || seat> seatsPerRows){
-            throw new IllegalArgumentException("Invalid seat number");
-        }
-
+    public void freeSeat(int rowNumber, int seatNumber) {
+        getRow(rowNumber).freeSeat(seatNumber);
     }
 
-    public int freeSeatsCount(){
+    public int freeSeatsCount() {
         int count = 0;
-        for(boolean[] row : seats){
-            for(boolean seat : row){
-                if(!seat){
-                    count++;
-                }
-            }
+        for (Row row : rows) {
+            count += row.freeSeatsCount();
         }
         return count;
     }
 
+    private void validateRow(int rowNumber) {
+        if (rowNumber < 1 || rowNumber > rows.size()) {
+            throw new IllegalArgumentException("Invalid row number");
+        }
+    }
+
     @Override
     public String toString() {
-        return "Hall " + number + " (" + rows + " rows, " + seatsPerRows + " seats per row)";
+        return "Hall " + number + " with " + rows.size() + " rows";
     }
 }

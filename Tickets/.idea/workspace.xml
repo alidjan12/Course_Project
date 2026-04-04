@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23742dfa-3594-4efe-979f-29d48b1cdd1d" name="Changes" comment="" />
+    <list default="true" id="23742dfa-3594-4efe-979f-29d48b1cdd1d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/CloseCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/Command.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/OpenCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/core/CommandInterpreter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/core/FileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,38 +36,48 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../../../../php-8.5.4/php.exe" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="3AA4J4f9Nx0dOB0icuWqsWaBYHm" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Application.executor": "Run",
-    "Application.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/Alidjan/IdeaProjects/OOP2/CourseProject/Course_Project/Tickets/src/Main.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.bg.tu_varna.f24621658.sit.app.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alidjan/IdeaProjects/OOP2/CourseProject/Course_Project/Tickets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Alidjan/IdeaProjects/OOP2/CourseProject/Course_Project/Tickets/src/Main.java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.GitLab CI Expression&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="bg.tu_varna.f24621658.sit.comm.app" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.bg.tu_varna.f24621658.sit.app.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="bg.tu_varna.f24621658.sit.Main" />
       <module name="Tickets" />
@@ -70,8 +91,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="bg.tu_varna.f24621658.sit.app.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="bg.tu_varna.f24621658.sit.app.Main" />
+      <module name="Tickets" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="bg.tu_varna.f24621658.sit.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.bg.tu_varna.f24621658.sit.app.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -91,7 +126,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1772021969262</updated>
-      <workItem from="1774199421477" duration="1712000" />
+      <workItem from="1774199421477" duration="2457000" />
+      <workItem from="1774280571759" duration="400000" />
+      <workItem from="1774439045418" duration="513000" />
+      <workItem from="1775218413827" duration="614000" />
+      <workItem from="1775219752076" duration="1839000" />
+      <workItem from="1775291003308" duration="2994000" />
     </task>
     <servers />
   </component>
