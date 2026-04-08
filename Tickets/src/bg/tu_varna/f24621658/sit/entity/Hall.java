@@ -1,67 +1,52 @@
 package bg.tu_varna.f24621658.sit.entity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Hall {
-    private final int number;
-    private final List<Row> rows;
+    private int hallNumber;
+    private List<Row> rows;
 
-    public Hall(int number) {
-        if(number <=0) {
-            throw new IllegalArgumentException("Invalid hall number");
+    public Hall(int hallNumber, int rowsCount, int[] seatsPerRow) {
+        if (hallNumber < 1) {
+            throw new IllegalArgumentException("Невалиден номер за зала!");
         }
-        this.number = number;
-        this.rows = new ArrayList<Row>();
+        if (seatsPerRow == null || seatsPerRow.length == 0) {
+            throw new IllegalArgumentException("Броят на редовете не може да е 0!");
+        }
+        if (seatsPerRow.length != rowsCount) {
+            throw new IllegalArgumentException("Броят редове трябва да съвпада с броя на подадените места за редовете!");
+        }
+
+        this.hallNumber = hallNumber;
+        this.rows = new ArrayList<>();
+
+        createRows(rowsCount,seatsPerRow);
     }
 
-    public int getNumber() {
-        return number;
+    //ред = 3
+    //места = 3,4,5
+    //ред(1):1,2,3
+    //ред(2):1,2,3,4
+    //ред(3):1,2,3,4,5
+    private void createRows(int rowsCount, int[] seatsPerRow) {
+        for (int i = 0; i < rowsCount; i++) {
+            rows.add(new Row(i + 1, seatsPerRow[i]));
+        }
     }
 
-    public void addRow(int seatsCount) {
-        int nextRowNumber = rows.size() + 1;
-        rows.add(new Row(nextRowNumber, seatsCount));
-    }
-
-    public int getRowsCount() {
-        return rows.size();
-    }
-
-    public Row getRow(int rowNumber) {
-        validateRow(rowNumber);
-        return rows.get(rowNumber - 1);
-    }
-
-    public boolean isSeatFree(int rowNumber, int seatNumber) {
-        return getRow(rowNumber).isSeatFree(seatNumber);
-    }
-
-    public void occupySeat(int rowNumber, int seatNumber) {
-        getRow(rowNumber).occupySeat(seatNumber);
-    }
-
-    public void freeSeat(int rowNumber, int seatNumber) {
-        getRow(rowNumber).freeSeat(seatNumber);
-    }
-
-    public int freeSeatsCount() {
-        int count = 0;
+    public void printHall(){
+        System.out.println("Hall number: "+hallNumber);
         for (Row row : rows) {
-            count += row.freeSeatsCount();
-        }
-        return count;
-    }
-
-    private void validateRow(int rowNumber) {
-        if (rowNumber < 1 || rowNumber > rows.size()) {
-            throw new IllegalArgumentException("Invalid row number");
+            System.out.println("row: "+row.getRowNumber()+row.toString());
         }
     }
 
-    @Override
-    public String toString() {
-        return "Hall " + number + " with " + rows.size() + " rows";
+    public int getHallNumber() {
+        return hallNumber;
+    }
+
+    public List<Row> getRows() {
+        return rows;
     }
 }

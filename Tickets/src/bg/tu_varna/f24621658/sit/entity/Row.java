@@ -4,63 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Row {
-    private final int number;
-    private final List<Seat> seats;
+    private int rowNumber;
+    private List<Seat> seats;
 
-    public Row(int number, int seatsCount) {
-         if (number <= 0) {
-            throw new IllegalArgumentException("Invalid row number");
+    public Row(int rowNumber,int seatsCount) {
+        if(rowNumber<1){
+            throw new IllegalArgumentException("Невалиден номер на ред!");
         }
-        if (seatsCount <= 0) {
-            throw new IllegalArgumentException("Seats count must be positive");
+        this.rowNumber = rowNumber;
+        seats = new ArrayList<Seat>();
+
+        createRow(seatsCount);
+    }
+
+    //създавам редица от места като [0] номерата започват от 1
+    private void createRow(int seatsCount) {
+        for (int i = 0; i < seatsCount; i++) {
+            seats.add(new Seat(i + 1));
         }
-
-        this.number = number;
-        this.seats = new ArrayList<>();
-
-        for (int i = 1; i <= seatsCount; i++) {
-            seats.add(new Seat(i));
-        }
     }
 
-    public int getNumber() {
-        return number;
+    public int getRowNumber() {
+        return rowNumber;
     }
 
-    public int getSeatsCount() {
-        return seats.size();
+    public List<Seat> getSeats() {
+        return seats;
     }
 
-    public Seat getSeat(int seatNumber) {
-        validateSeat(seatNumber);
-        return seats.get(seatNumber - 1);
-    }
-
-    public boolean isSeatFree(int seatNumber) {
-        return getSeat(seatNumber).isFree();
-    }
-
-    public void occupySeat(int seatNumber) {
-        getSeat(seatNumber).occupy();
-    }
-
-    public void freeSeat(int seatNumber) {
-        getSeat(seatNumber).free();
-    }
-
-    public int freeSeatsCount() {
-        int count = 0;
-        for (Seat seat : seats) {
-            if (seat.isFree()) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    private void validateSeat(int seatNumber) {
-        if (seatNumber < 1 || seatNumber > seats.size()) {
-            throw new IllegalArgumentException("Invalid seat number");
-        }
+    @Override
+    public String toString() {
+        return seats.toString();
     }
 }

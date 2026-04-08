@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="23742dfa-3594-4efe-979f-29d48b1cdd1d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/FileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/CloseCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/Command.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/commands/OpenCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/core/CommandInterpreter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/comm/core/FileManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Booking.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Row.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Seat.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +24,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -83,7 +80,7 @@
       <module name="Tickets" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="bg.tu_varna.f24621658.sit.entity.*" />
+          <option name="PATTERN" value="bg.tu_varna.f24621658.sit.repository.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -132,6 +129,9 @@
       <workItem from="1775218413827" duration="614000" />
       <workItem from="1775219752076" duration="1839000" />
       <workItem from="1775291003308" duration="2994000" />
+      <workItem from="1775306566282" duration="8259000" />
+      <workItem from="1775406385421" duration="8000" />
+      <workItem from="1775666827130" duration="15149000" />
     </task>
     <servers />
   </component>

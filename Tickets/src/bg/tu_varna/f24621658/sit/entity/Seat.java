@@ -1,35 +1,21 @@
 package bg.tu_varna.f24621658.sit.entity;
 
 public class Seat {
-    private final int number;
-    private boolean occupied;
+    private int seatNumber;
 
-    public Seat(int number){
-        if(number <= 0){
-            throw new IllegalArgumentException("Invalid seat number!");
+    public Seat(int seatNumber) {
+        if(seatNumber < 1) {
+            throw new IllegalArgumentException("Невалиден номер на място!");
         }
-
-        this.number = number;
-        this.occupied = false;
+        this.seatNumber = seatNumber;
     }
 
-    public int getNumber() {
-        return number;
+    public int getSeatNumber() {
+        return seatNumber;
     }
 
-    public boolean isOccupied() {
-        return occupied;
-    }
-
-    public boolean isFree() {
-        return !occupied;
-    }
-
-    public void occupy() {
-        this.occupied = true;
-    }
-
-    public void free() {
-        this.occupied = false;
+    @Override
+    public String toString() {
+        return "Seat: "+ seatNumber + " ";
     }
 }
