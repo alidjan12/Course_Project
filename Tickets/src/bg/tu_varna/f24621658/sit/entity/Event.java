@@ -51,6 +51,7 @@ public class Event {
 
 
     public void bookTicket(int row, int seat, String note){
+        hall.validateSeat(row, seat); //проверка дали мястото съществува
         SeatKey seatKey = new SeatKey(row,seat);
         Ticket ticket = tickets.computeIfAbsent(seatKey, k -> new Ticket(row, seat, TicketStatus.FREE, "", ""));
 
@@ -58,14 +59,18 @@ public class Event {
     }
 
     public void buyTicket(int row, int seat){
+        hall.validateSeat(row, seat);
+
         SeatKey seatKey = new SeatKey(row,seat);
-        Ticket ticket = tickets.computeIfAbsent(seatKey, k -> new Ticket(row, seat, TicketStatus.SOLD, "", ""));
+        Ticket ticket = tickets.computeIfAbsent(seatKey, k -> new Ticket(row, seat, TicketStatus.FREE, "", ""));
 
         String code = codeGenerator.generateCode(this,row,seat);
         ticket.buy(code);
     }
 
     public void unBookTicket(int row, int seat) {
+        hall.validateSeat(row, seat);
+
         SeatKey seatKey = new SeatKey(row, seat);
         Ticket ticket = tickets.get(seatKey);
 
@@ -74,5 +79,17 @@ public class Event {
         }
 
         ticket.unbook();
+    }
+
+    public int getSoldTickets() {
+        int count = 0;
+
+        for (Ticket t : tickets.values()) {
+            if (t.getStatus() == TicketStatus.SOLD) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

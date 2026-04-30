@@ -7,10 +7,18 @@
     <list default="true" id="23742dfa-3594-4efe-979f-29d48b1cdd1d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Booking.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Row.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Seat.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/AddEventCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/AddEventCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/core/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/core/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Seat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/contracts/InformationSystemCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/contracts/InformationSystemCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/keys/SeatKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/keys/SeatKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/TicketSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/TicketSystem.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +31,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -132,6 +140,8 @@
       <workItem from="1775306566282" duration="8259000" />
       <workItem from="1775406385421" duration="8000" />
       <workItem from="1775666827130" duration="15149000" />
+      <workItem from="1775712444041" duration="5016000" />
+      <workItem from="1777559934757" duration="5168000" />
     </task>
     <servers />
   </component>

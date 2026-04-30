@@ -49,4 +49,21 @@ public class Hall {
     public List<Row> getRows() {
         return rows;
     }
+
+    public boolean hasSeat(int rowNumber, int seatNumber) {
+        if (rowNumber < 1 || rowNumber > rows.size()) {
+            return false;
+        }
+
+        Row row = rows.get(rowNumber - 1);
+
+        return seatNumber >= 1 && seatNumber <= row.getSeats().size();
+    }
+
+    public void validateSeat(int rowNumber, int seatNumber) {
+        if (!hasSeat(rowNumber, seatNumber)) {
+            throw new IllegalArgumentException(
+                    "Няма такова място в залата: ред " + rowNumber + ", място " + seatNumber);
+        }
+    }
 }

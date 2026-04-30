@@ -46,7 +46,7 @@ public class Ticket {
             this.status = TicketStatus.BOOKED;
             this.note = note;
         }else{
-            throw new RuntimeException("Билета е вече закупен");
+            throw new RuntimeException("Билетът вече е резервиран");
         }
     }
     public void buy(String code){

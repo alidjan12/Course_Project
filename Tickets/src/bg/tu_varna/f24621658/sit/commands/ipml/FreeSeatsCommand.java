@@ -2,19 +2,18 @@ package bg.tu_varna.f24621658.sit.commands.ipml;
 
 import bg.tu_varna.f24621658.sit.commands.Command;
 import bg.tu_varna.f24621658.sit.commands.CommandContext;
+
 import java.time.LocalDate;
 
-public class AddEventCommand implements Command {
+public class FreeSeatsCommand implements Command {
     @Override
     public void execute(String[] args, CommandContext context) {
-       if(args.length<4){
-           System.out.println("Usage: addevent <date> <hall> <name>");
-           return;
-       }
+        if(args.length <3){
+            System.out.println("Usage: freeseats <date> <name>");
+            return;
+        }
         LocalDate date = LocalDate.parse(args[1]);
-       int hall = Integer.parseInt(args[2]);
-       String name =  args[3];
-
-       context.getTicketSystem().addEvent(date,hall,name);
+        String name = args[2];
+        context.getTicketSystem().freeSeats(date, name);
     }
 }

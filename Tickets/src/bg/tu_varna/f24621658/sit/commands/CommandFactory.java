@@ -15,6 +15,14 @@ public class CommandFactory {
         commands.put("save", new SaveCommand());
         commands.put("help", new HelpCommand());
         commands.put("exit", new ExitCommand());
+        commands.put("addevent", new AddEventCommand());
+        commands.put("freeseats", new FreeSeatsCommand());
+        commands.put("book", new BookCommand());
+        commands.put("unbook", new UnBookCommand());
+        commands.put("buy",new BuyCommand());
+        commands.put("bookings",new BookingsCommand());
+        commands.put("check",new CheckCommand());
+        commands.put("report",new ReportCommand());
     }
 
     public Command getCommand(String inputLine) {

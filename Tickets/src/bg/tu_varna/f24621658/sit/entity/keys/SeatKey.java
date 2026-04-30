@@ -7,10 +7,10 @@ public class SeatKey {
     private int seat;
 
     public SeatKey(int row, int seat) {
-        if(row <0){
+        if(row <1){
             throw new IllegalArgumentException("Невалидна редица!");
         }
-        if(seat<0){
+        if(seat<1){
             throw new IllegalArgumentException("Невалидно място");
         }
         this.row = row;

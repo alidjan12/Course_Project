@@ -4,6 +4,7 @@ import bg.tu_varna.f24621658.sit.commands.Command;
 import bg.tu_varna.f24621658.sit.commands.CommandContext;
 import bg.tu_varna.f24621658.sit.commands.CommandFactory;
 import bg.tu_varna.f24621658.sit.services.FileService;
+import bg.tu_varna.f24621658.sit.services.TicketSystem;
 
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ public class Engine {
     public Engine() {
         this.scanner = new Scanner(System.in);
         this.commandFactory = new CommandFactory();
-        this.context = new CommandContext(new FileService());
+        this.context = new CommandContext(new FileService(),new TicketSystem());
     }
 
     public void start() {
@@ -35,7 +36,14 @@ public class Engine {
             }
 
             String[] args = input.split("\\s+");
-            command.execute(args, context);
+            
+            try {
+                command.execute(args, context);
+            } catch (RuntimeException e) {
+                System.out.println("Грешка: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Възникна неочаквана грешка.");
+            }
         }
     }
 }

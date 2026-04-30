@@ -18,4 +18,6 @@ public class Seat {
     public String toString() {
         return "Seat: "+ seatNumber + " ";
     }
+
+
 }
