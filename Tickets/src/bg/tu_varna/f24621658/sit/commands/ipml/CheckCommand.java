@@ -7,7 +7,7 @@ public class CheckCommand implements Command {
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length != 2) {
-            System.out.println("Usage: check <code>");
+            context.getPrinter().printMessage("Команда: check <code>");
             return;
         }
 

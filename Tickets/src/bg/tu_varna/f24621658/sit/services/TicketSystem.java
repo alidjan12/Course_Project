@@ -19,10 +19,10 @@ public class TicketSystem implements InformationSystemCommands {
     private HallRepository hallRepo;
     private InformationPrinter printer;
 
-    public TicketSystem() {
+    public TicketSystem(InformationPrinter printer) {
         this.eventRepo = new EventRepository();
         this.hallRepo = new HallRepository();
-        this.printer = new ConsoleInformationPrinter();
+        this.printer = printer;
     }
 
     //addevent - готово
@@ -64,16 +64,14 @@ public class TicketSystem implements InformationSystemCommands {
                 Ticket ticket = tickets.get(key);
 
                 if(ticket == null || ticket.getStatus()== TicketStatus.FREE) {
-                    //Нарушава SOLID
-                    System.out.println("Ред " + row.getRowNumber() +
+                    printer.printMessage("Ред " + row.getRowNumber() +
                             ", място " + seat.getSeatNumber());
                     hasFreeSeats = true;
                 }
             }
         }
-        //Нарушава SOLID
         if (!hasFreeSeats) {
-            System.out.println("Няма свободни места");
+            printer.printMessage("Няма свободни места");
         }
      }
 
@@ -112,8 +110,7 @@ public class TicketSystem implements InformationSystemCommands {
             throw new RuntimeException("Невалиден билетен код!");
         }
 
-        //Това разваля SOLID принципите
-        System.out.println("Билетът е валиден за ред " +
+        printer.printMessage("Билетът е валиден за ред"+
                 ticket.getRow() + ", място " + ticket.getSeat());
     }
 
@@ -177,5 +174,99 @@ public class TicketSystem implements InformationSystemCommands {
                 printer.printReport(event, event.getSoldTickets());
             }
         }
+    }
+
+    public String exportData(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("TICKETS_V1").append("\n");
+
+        for(Event event:eventRepo.getEvents().values()){
+            sb.append("Event;")
+                    .append(event.getDate()).append(";")
+                    .append(event.getHall().getHallNumber()).append(";")
+                    .append(event.getName())
+                    .append("\n");
+
+            for (Ticket ticket : event.getTickets().values()) {
+                if (ticket.getStatus() == TicketStatus.FREE) {
+                    continue;
+                }
+
+                sb.append("TICKET;")
+                        .append(event.getDate()).append(";")
+                        .append(event.getName()).append(";")
+                        .append(ticket.getRow()).append(";")
+                        .append(ticket.getSeat()).append(";")
+                        .append(ticket.getStatus()).append(";")
+                        .append(ticket.getNote() == null || ticket.getNote().isBlank() ? "-" : ticket.getNote()).append(";")
+                        .append(ticket.getCode() == null || ticket.getCode().isBlank() ? "-" : ticket.getCode())
+                        .append(System.lineSeparator());
+            }
+        }
+        return sb.toString();
+    }
+
+    public void importData(String content) {
+        eventRepo.clear();
+
+        if (content == null || content.isBlank()) {
+            return;
+        }
+
+        String[] lines = content.split("\\R");
+
+        if (!lines[0].equals("TICKETS_V1")) {
+            throw new RuntimeException("Невалиден файлов формат.");
+        }
+
+        for (int i = 1; i < lines.length; i++) {
+            String line = lines[i];
+
+            if (line.isBlank()) {
+                continue;
+            }
+
+            String[] parts = line.split(";", -1);
+
+            if (parts[0].equalsIgnoreCase("EVENT")) {
+                LocalDate date = LocalDate.parse(parts[1]);
+                int hallNumber = Integer.parseInt(parts[2]);
+                String name = parts[3];
+
+                addEvent(date, hallNumber, name);
+            } else if (parts[0].equalsIgnoreCase("TICKET")) {
+                LocalDate date = LocalDate.parse(parts[1]);
+                String eventName = parts[2];
+                int row = Integer.parseInt(parts[3]);
+                int seat = Integer.parseInt(parts[4]);
+                TicketStatus status = TicketStatus.valueOf(parts[5]);
+
+                String note = parts[6].equals("-") ? "" : parts[6];
+                String code = parts[7].equals("-") ? "" : parts[7];
+
+                Event event = eventRepo.findByNameAndDate(eventName, date);
+
+                if (event == null) {
+                    throw new RuntimeException("Билет към несъществуващо представление: " + eventName);
+                }
+
+                event.restoreTicket(row, seat, status, note, code);
+            } else {
+                throw new RuntimeException("Непознат ред във файла: " + line);
+            }
+        }
+    }
+
+    public boolean eventExists(LocalDate date, String name) {
+        return eventRepo.eventExists(date, name);
+    }
+
+    public String findClosestEventName(LocalDate date, String input) {
+        return eventRepo.findClosestEventName(date, input);
+    }
+
+    public void clear() {
+        eventRepo.clear();
     }
 }

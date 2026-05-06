@@ -31,9 +31,9 @@ public class FileService {
             currentFilePath = filePath;
             fileOpened = true;
 
-            System.out.println("Successfully opened " + file.getName());
+            System.out.println("Успешно отворен файл: " + file.getName());
         } catch (IOException e) {
-            System.out.println("Error: Could not open file.");
+            System.out.println("Грешка: Файлът не може да бъде отворен.");
         }
     }
 
@@ -45,7 +45,7 @@ public class FileService {
         content = "";
         fileOpened = false;
 
-        System.out.println("Successfully closed file.");
+        System.out.println("Успешно затворен файл.");
     }
 
     public void save() {
@@ -53,10 +53,9 @@ public class FileService {
 
         try (FileWriter writer = new FileWriter(currentFilePath)) {
             writer.write(content);
-            System.out.println("Successfully saved " + new File(currentFilePath).getName());
+            System.out.println("Успешно запазен файл: " + new File(currentFilePath).getName());
         } catch (IOException e) {
-            System.out.println("Error: Could not save file.");
-        }
+            System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
 
     public void saveAs(String newFilePath) {
@@ -64,10 +63,9 @@ public class FileService {
 
         try (FileWriter writer = new FileWriter(newFilePath)) {
             writer.write(content);
-            System.out.println("Successfully saved " + new File(newFilePath).getName());
+            System.out.println("Успешно запазен файл: " + new File(currentFilePath).getName());
         } catch (IOException e) {
-            System.out.println("Error: Could not save file.");
-        }
+            System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
 
     public boolean hasOpenedFile() {
@@ -86,7 +84,6 @@ public class FileService {
     //proveravq dail ima otvoren fajl
     private void ensureFileIsOpened() {
         if (!fileOpened) {
-            throw new IllegalStateException("No file is currently opened.");
-        }
+            throw new IllegalStateException("Няма отворен файл.");        }
     }
 }

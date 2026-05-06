@@ -8,8 +8,9 @@ public class CloseCommand implements Command {
     public void execute(String[] args, CommandContext context) {
         try {
             context.getFileService().close();
+            context.getTicketSystem().clear();
         } catch (IllegalStateException e) {
-            System.out.println("Error: " + e.getMessage());
+            context.getPrinter().printMessage("Error: " + e.getMessage());
         }
     }
 }

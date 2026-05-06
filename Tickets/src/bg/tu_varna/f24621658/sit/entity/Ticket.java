@@ -41,6 +41,14 @@ public class Ticket {
         this.code = code;
     }
 
+    public void setStatus(TicketStatus status) {
+        this.status = status;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     public void book(String note){
         if(status == TicketStatus.FREE){
             this.status = TicketStatus.BOOKED;

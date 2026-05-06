@@ -1,8 +1,10 @@
 package bg.tu_varna.f24621658.sit.print;
 
+import bg.tu_varna.f24621658.sit.commands.CommandContext;
 import bg.tu_varna.f24621658.sit.entity.Event;
 import bg.tu_varna.f24621658.sit.entity.Ticket;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ConsoleInformationPrinter implements InformationPrinter {
@@ -36,5 +38,16 @@ public class ConsoleInformationPrinter implements InformationPrinter {
         System.out.println("Зала: " + event.getHall().getHallNumber());
         System.out.println("Продадени билети: " + soldTickets);
         System.out.println("-----------------------------");
+    }
+
+    @Override
+    public void printClosestEventMessage(CommandContext context, LocalDate date, String inputName) {
+        String closestName = context.getTicketSystem().findClosestEventName(date, inputName);
+
+        if (closestName != null) {
+            context.getPrinter().printMessage("Няма такова представление. Най-близко намерено: " + closestName);
+        } else {
+            context.getPrinter().printMessage("Няма представления за дата " + date + ".");
+        }
     }
 }

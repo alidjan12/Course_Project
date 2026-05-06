@@ -7,9 +7,12 @@ public class SaveCommand implements Command {
     @Override
     public void execute(String[] args, CommandContext context) {
         try {
+            String content = context.getTicketSystem().exportData();
+            context.getFileService().setContent(content);
             context.getFileService().save();
+
         } catch (IllegalStateException e) {
-            System.out.println("Error: " + e.getMessage());
+            context.getPrinter().printMessage("Error: " + e.getMessage());
         }
     }
 }

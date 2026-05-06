@@ -9,7 +9,7 @@ public class ReportCommand implements Command {
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length != 3 && args.length != 4) {
-            System.out.println("Usage: report <from> <to> [<hall>]");
+            context.getPrinter().printMessage("Usage: report <from> <to> [<hall>]");
             return;
         }
 

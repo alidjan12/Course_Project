@@ -92,4 +92,12 @@ public class Event {
 
         return count;
     }
+
+    public void restoreTicket(int row, int seat, TicketStatus status, String note, String code) {
+        SeatKey key = new SeatKey(row, seat);
+
+        Ticket ticket = new Ticket(row, seat,status, note, code);
+
+        tickets.put(key, ticket);
+    }
 }
