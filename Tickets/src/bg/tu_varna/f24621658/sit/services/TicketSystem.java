@@ -140,30 +140,40 @@ public class TicketSystem implements InformationSystemCommands {
 
     @Override
     public void report(LocalDate from, LocalDate to, int hallNumber) {
-        Map<EventKey,Event> events = eventRepo.getEvents();
+        Map<EventKey, Event> events = eventRepo.getEvents();
+        boolean found = false;
 
-        for(Event event : events.values()){
-           boolean isInPeriod = !event.getDate().isBefore(from) && !event.getDate().isAfter(to);
+        for (Event event : events.values()) {
+            boolean isInPeriod = !event.getDate().isBefore(from) && !event.getDate().isAfter(to);
+            boolean isInHall = event.getHall().getHallNumber() == hallNumber;
 
-           boolean isInHall = event.getHall().getHallNumber() ==  hallNumber;
-
-           if(isInPeriod && isInHall) {
+            if (isInPeriod && isInHall) {
                 printer.printReport(event, event.getSoldTickets());
-           }
+                found = true;
+            }
+        }
+
+        if (!found) {
+            printer.printMessage("Няма продадени билети за този период и зала.");
         }
     }
 
     @Override
     public void report(LocalDate from, LocalDate to) {
-        Map<EventKey,Event> events = eventRepo.getEvents();
+        Map<EventKey, Event> events = eventRepo.getEvents();
+        boolean found = false;
 
-        for(Event event : events.values()){
+        for (Event event : events.values()) {
             boolean isInPeriod = !event.getDate().isBefore(from) && !event.getDate().isAfter(to);
 
-            if(isInPeriod) {
-
+            if (isInPeriod) {
                 printer.printReport(event, event.getSoldTickets());
+                found = true;
             }
+        }
+
+        if (!found) {
+            printer.printMessage("Няма продадени билети за този период.");
         }
     }
 
@@ -286,7 +296,7 @@ public class TicketSystem implements InformationSystemCommands {
 
         String[] lines = content.split("\\R");
 
-        if (!lines[0].equals("TICKETS_V1")) {
+        if (!lines[0].trim().equals("TICKETS_V1")) {
             throw new RuntimeException("Невалиден файлов формат.");
         }
 
@@ -298,33 +308,64 @@ public class TicketSystem implements InformationSystemCommands {
             }
 
             String[] parts = line.split(";", -1);
+            String lineType = parts[0].trim();
+            int lineNumber = i + 1;
 
-            if (parts[0].equalsIgnoreCase("EVENT")) {
-                LocalDate date = LocalDate.parse(parts[1]);
-                int hallNumber = Integer.parseInt(parts[2]);
-                String name = parts[3];
-
-                addEvent(date, hallNumber, name);
-            } else if (parts[0].equalsIgnoreCase("TICKET")) {
-                LocalDate date = LocalDate.parse(parts[1]);
-                String eventName = parts[2];
-                int row = Integer.parseInt(parts[3]);
-                int seat = Integer.parseInt(parts[4]);
-                TicketStatus status = TicketStatus.valueOf(parts[5]);
-
-                String note = parts[6].equals("-") ? "" : parts[6];
-                String code = parts[7].equals("-") ? "" : parts[7];
-
-                Event event = eventRepo.findByNameAndDate(eventName, date);
-
-                if (event == null) {
-                    throw new RuntimeException("Билет към несъществуващо представление: " + eventName);
-                }
-
-                event.restoreTicket(row, seat, status, note, code);
+            if (lineType.equalsIgnoreCase("EVENT")) {
+                importEventLine(parts, lineNumber);
+            } else if (lineType.equalsIgnoreCase("TICKET")) {
+                importTicketLine(parts, lineNumber);
             } else {
-                throw new RuntimeException("Непознат ред във файла: " + line);
+                throw new RuntimeException("Грешка на ред " + lineNumber + ": Непознат ред във файла.");
             }
+        }
+    }
+
+    private void importEventLine(String[] parts, int lineNumber) {
+        try {
+            if (parts.length != 4) {
+                throw new RuntimeException("Невалиден ред за представление.");
+            }
+
+            LocalDate date = LocalDate.parse(parts[1]);
+            int hallNumber = Integer.parseInt(parts[2]);
+            String name = parts[3];
+
+            addEvent(date, hallNumber, name);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Грешка на ред " + lineNumber + ": " + e.getMessage());
+        }
+    }
+
+    private void importTicketLine(String[] parts, int lineNumber) {
+        try {
+            if (parts.length != 8) {
+                throw new RuntimeException("Невалиден ред за билет.");
+            }
+
+            LocalDate date = LocalDate.parse(parts[1]);
+            String eventName = parts[2];
+            int row = Integer.parseInt(parts[3]);
+            int seat = Integer.parseInt(parts[4]);
+            TicketStatus status = TicketStatus.valueOf(parts[5]);
+
+            String note = parts[6].equals("-") ? "" : parts[6];
+            String code = parts[7].equals("-") ? "" : parts[7];
+
+            Event event = eventRepo.findByNameAndDate(eventName, date);
+
+            if (event == null) {
+                printer.printMessage(
+                        "Грешка на ред " + lineNumber +
+                                ": билет към несъществуващо представление '" + eventName +
+                                "' на дата " + date + ". Редът е пропуснат."
+                );
+                return;
+            }
+
+            event.restoreTicket(row, seat, status, note, code);
+        } catch (RuntimeException e) {
+            printer.printMessage("Грешка на ред " + lineNumber + ": " + e.getMessage() + " Редът е пропуснат.");
         }
     }
 

@@ -17,6 +17,7 @@ public class FileService {
     }
 
     //отваря файла или го създава ако няма такъв
+
     public void open(String filePath) {
         File file = new File(filePath);
 
@@ -33,7 +34,10 @@ public class FileService {
 
             System.out.println("Успешно отворен файл: " + file.getName());
         } catch (IOException e) {
-            System.out.println("Грешка: Файлът не може да бъде отворен.");
+            currentFilePath = null;
+            content = "";
+            fileOpened = false;
+            throw new IllegalStateException("Файлът не може да бъде отворен.", e);
         }
     }
 

@@ -99,10 +99,19 @@ public class Event {
     }
 
     public void restoreTicket(int row, int seat, TicketStatus status, String note, String code) {
+        hall.validateSeat(row, seat);
+
+        if (status == null) {
+            throw new IllegalArgumentException("Невалиден статус на билет.");
+        }
+
         SeatKey key = new SeatKey(row, seat);
 
-        Ticket ticket = new Ticket(row, seat,status, note, code);
+        if (tickets.containsKey(key)) {
+            throw new IllegalArgumentException("Дублиран билет за ред " + row + ", място " + seat + ".");
+        }
 
+        Ticket ticket = new Ticket(row, seat, status, note == null ? "" : note, code == null ? "" : code);
         tickets.put(key, ticket);
     }
 }
