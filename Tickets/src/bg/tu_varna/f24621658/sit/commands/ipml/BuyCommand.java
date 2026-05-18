@@ -24,7 +24,7 @@ public class BuyCommand implements Command {
             return;
         }
 
-        context.getTicketSystem().buy(row, seat, date, name);
-        context.getPrinter().printMessage("Успешно закупен билет.");
+        String code = context.getTicketSystem().buy(row, seat, date, name);
+        context.getPrinter().printMessage("Успешно закупен билет. Код: " + code);
     }
 }

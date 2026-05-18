@@ -14,9 +14,21 @@ public class BookCommand implements Command {
             return;
         }
 
-        int row = Integer.parseInt(args[1]);
-        int seat = Integer.parseInt(args[2]);
-        LocalDate date = LocalDate.parse(args[3]);
+        int row;
+        int seat;
+        LocalDate date;
+
+        try {
+            row = Integer.parseInt(args[1]);
+            seat = Integer.parseInt(args[2]);
+            date = LocalDate.parse(args[3]);
+        } catch (NumberFormatException e) {
+            context.getPrinter().printMessage("Грешка: редът и мястото трябва да са числа.");
+            return;
+        } catch (Exception e) {
+            context.getPrinter().printMessage("Грешка: датата трябва да е във формат yyyy-mm-dd.");
+            return;
+        }
 
         String foundName = null;
         String note = null;
@@ -40,14 +52,13 @@ public class BookCommand implements Command {
                 return;
             }
 
-            String closestName = context.getTicketSystem().findClosestEventName(date, allTextAfterDate);
+            context.getPrinter().printClosestEventMessage(context, date, allTextAfterDate);
+            return;
+        }
 
-            if (closestName != null) {
-                context.getPrinter().printMessage("Няма такова представление. Най-близко намерено: " + closestName);
-            } else {
-                context.getPrinter().printMessage("Няма представления за дата " + date + ".");
-            }
-
+        if (note.isBlank()) {
+            context.getPrinter().printMessage("Грешка: Липсва бележка за резервацията.");
+            context.getPrinter().printMessage("Употреба: book <ред> <място> <дата> <име> <бележка>");
             return;
         }
 

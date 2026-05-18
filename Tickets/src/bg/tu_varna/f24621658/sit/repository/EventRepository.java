@@ -1,16 +1,15 @@
 package bg.tu_varna.f24621658.sit.repository;
 
 import bg.tu_varna.f24621658.sit.entity.Event;
+import bg.tu_varna.f24621658.sit.entity.Hall;
 import bg.tu_varna.f24621658.sit.entity.Ticket;
+import bg.tu_varna.f24621658.sit.entity.TicketDetails;
 import bg.tu_varna.f24621658.sit.entity.enums.TicketStatus;
 import bg.tu_varna.f24621658.sit.entity.keys.EventKey;
 import bg.tu_varna.f24621658.sit.entity.keys.SeatKey;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventRepository{
     private Map<EventKey, Event> events;
@@ -19,7 +18,7 @@ public class EventRepository{
         events = new HashMap<>();
     }
 
-    //Трябва командата да връща грешка ако вече съществува др представление на същата дата
+    //добавяне на евент
     public void save(Event event) {
         if(existsByHallAndDate(event.getHall().getHallNumber(), event.getDate())){
            throw new RuntimeException("Съществува друго представление в същата зала и време.");
@@ -32,21 +31,27 @@ public class EventRepository{
         events.put(key,event);
     }
 
+    //премахване на евент
+    public void remove(LocalDate date, String name) {
+        EventKey key = new EventKey(name, date);
+
+        if (!events.containsKey(key)) {
+            throw new RuntimeException("Няма такова представление.");
+        }
+
+        events.remove(key);
+    }
+
+    public Map<EventKey, Event> getEvents() {
+        return events;
+    }
+    //изчиствам паметта
+    public void clear(){
+        events.clear();
+    }
+
     public Event findByNameAndDate(String name, LocalDate date){
         return events.get(new EventKey(name,date));
-    }
-
-    public boolean existsByNameAndDate(String name, LocalDate date) {
-        return events.containsKey(new EventKey(name, date));
-    }
-
-    public Event findByHallAndDate(int hallNumber, LocalDate date){
-        for(Event e : events.values()){
-            if(e.getHall().getHallNumber() == hallNumber &&  e.getDate().equals(date)){
-                return e;
-            }
-        }
-        return null;
     }
 
     public boolean existsByHallAndDate(int hallNumber, LocalDate date){
@@ -58,40 +63,13 @@ public class EventRepository{
         return false;
     }
 
-    //Търсене на билет по въведен код
-    public Ticket findTicketByCode(String code) {
-        for (Event event : events.values()) {
-            for (Ticket ticket : event.getTickets().values()) {
-                if (ticket.getCode() != null && ticket.getCode().equals(code)) {
-                    return ticket;
-                }
-            }
-        }
-        return null;
+    //Връщам сортиран лист на представленията
+    public List<Event> getSortedEvents() {
+        List<Event> result = new ArrayList<>(events.values());
+        result.sort(eventComparator());
+        return result;
     }
-
-    public Map<EventKey, Event> getEvents() {
-        return events;
-    }
-
-    public List<Ticket> getBookedTickets(String name, LocalDate date){
-        Event event = events.get(new EventKey(name, date));
-
-        if (event == null) {
-            throw new RuntimeException("Няма такова представление");
-        }
-
-        List<Ticket> bookedTickets = new ArrayList<>();
-
-        for (Ticket ticket : event.getTickets().values()) {
-            if (ticket.getStatus() == TicketStatus.BOOKED) {
-                bookedTickets.add(ticket);
-            }
-        }
-
-        return bookedTickets;
-    }
-
+    //Връщам списък от представления за дадена дата
     public List<Event> getEventsByDate(LocalDate date){
         List<Event> dateEvents = new ArrayList<>();
 
@@ -103,7 +81,7 @@ public class EventRepository{
 
         return dateEvents;
     }
-
+    //Връщам списък от представления с име ....
     public List<Event> getEventsByName(String name){
         List<Event> dateEvents = new ArrayList<>();
 
@@ -116,30 +94,81 @@ public class EventRepository{
         return dateEvents;
     }
 
-    public List<Ticket> getBookedTickets(LocalDate date){
-        List<Ticket> bookedTickets = new ArrayList<>();
 
-        for(Event e:getEventsByDate(date)){
-            for(Ticket ticket : e.getTickets().values()){
-                if(ticket.getStatus() == TicketStatus.BOOKED){
-                    bookedTickets.add(ticket);
-                }
-            }
-        }
-        return bookedTickets;
+    public boolean eventExists(LocalDate date, String name) {
+
+        return findByNameAndDate(name, date) != null;
     }
 
-    public List<Ticket> getBookedTickets(String name){
-        List<Ticket> bookedTickets = new ArrayList<>();
+    //Връщам списък с евенти между две дати
+    public List<Event> getEventsBetween(LocalDate from, LocalDate to){
+        List<Event> result = new ArrayList<>();
+        for (Event event : events.values()) {
+            boolean isInPeriod = !event.getDate().isBefore(from) && !event.getDate().isAfter(to);
 
-        for(Event e:getEventsByName(name)){
-            for(Ticket ticket : e.getTickets().values()){
-                if(ticket.getStatus() == TicketStatus.BOOKED){
-                    bookedTickets.add(ticket);
+            if(isInPeriod){
+                result.add(event);
+            }
+        }
+        return result;
+    }
+    //Намирам детайлите на билет по кода
+    public TicketDetails findTicketDetailsByCode(String code) {
+        for (Event event : events.values()) {
+            for (Ticket ticket : event.getTickets().values()) {
+                if (ticket.getCode() != null && ticket.getCode().equals(code)) {
+                    return new TicketDetails(event, ticket);
                 }
             }
         }
-        return bookedTickets;
+
+        return null;
+    }
+
+    public List<TicketDetails> getBookedTickets() {
+        List<TicketDetails> result = new ArrayList<>();
+
+        for (Event event : getSortedEvents()) {
+            addBookedTickets(result, event);
+        }
+
+        sortTicketDetails(result);
+        return result;
+    }
+
+    public List<TicketDetails> getBookedTickets(LocalDate date) {
+        List<TicketDetails> result = new ArrayList<>();
+
+        for (Event event : getEventsByDate(date)) {
+            addBookedTickets(result, event);
+        }
+
+        sortTicketDetails(result);
+        return result;
+    }
+
+    public List<TicketDetails> getBookedTickets(String name) {
+        List<TicketDetails> result = new ArrayList<>();
+
+        for (Event event : getEventsByName(name)) {
+            addBookedTickets(result, event);
+        }
+
+        sortTicketDetails(result);
+        return result;
+    }
+
+    public List<TicketDetails> getBookedTickets(String name, LocalDate date) {
+        Event event = events.get(new EventKey(name, date));
+
+        if (event == null) {
+            throw new RuntimeException("Няма такова представление.");
+        }
+
+        List<TicketDetails> result = new ArrayList<>();
+        addBookedTickets(result, event);
+        sortTicketDetails(result);
+        return result;
     }
 
     public String findClosestEventName(LocalDate date, String input) {
@@ -165,6 +194,34 @@ public class EventRepository{
         return closestName;
     }
 
+    //
+    private void addBookedTickets(List<TicketDetails> result, Event event) {
+        for (Ticket ticket : event.getTickets().values()) {
+            if (ticket.getStatus() == TicketStatus.BOOKED) {
+                result.add(new TicketDetails(event, ticket));
+            }
+        }
+    }
+
+    //сортирам билети по дата, представление, зала, редица, място
+    private void sortTicketDetails(List<TicketDetails> tickets) {
+        tickets.sort(Comparator
+                .comparing(TicketDetails::getDate)
+                .thenComparing(TicketDetails::getEventName)
+                .thenComparingInt(TicketDetails::getHallNumber)
+                .thenComparingInt(item -> item.getTicket().getRow())
+                .thenComparingInt(item -> item.getTicket().getSeat()));
+    }
+
+    //Подредени по дата, име, зала
+    private Comparator<Event> eventComparator() {
+        return Comparator
+                .comparing(Event::getDate)
+                .thenComparing(Event::getName)
+                .thenComparingInt(event -> event.getHall().getHallNumber());
+    }
+
+    //
     private int levenshteinDistance(String first, String second) {
         int[][] dp = new int[first.length() + 1][second.length() + 1];
 
@@ -188,13 +245,5 @@ public class EventRepository{
         }
 
         return dp[first.length()][second.length()];
-    }
-
-    public boolean eventExists(LocalDate date, String name) {
-        return findByNameAndDate(name, date) != null;
-    }
-
-    public void clear(){
-        events.clear();
     }
 }

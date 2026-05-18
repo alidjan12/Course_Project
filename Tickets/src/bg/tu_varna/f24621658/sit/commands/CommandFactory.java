@@ -23,6 +23,11 @@ public class CommandFactory {
         commands.put("bookings",new BookingsCommand());
         commands.put("check",new CheckCommand());
         commands.put("report",new ReportCommand());
+        commands.put("mostwatched", new MostWatchedCommand());
+        commands.put("lowattendance", new LowAttendanceCommand());
+        commands.put("removeevent", new RemoveEventCommand());
+        commands.put("showevents", new ShowEventsCommand());
+        commands.put("showhalls", new ShowHallsCommand());
     }
 
     public Command getCommand(String inputLine) {

@@ -35,11 +35,23 @@ public class Hall {
         }
     }
 
-    public void printHall(){
-        System.out.println("Hall number: "+hallNumber);
+    public String getLayout() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Зала ").append(hallNumber).append(System.lineSeparator());
+        sb.append("Капацитет: ").append(getCapacity()).append(" места").append(System.lineSeparator());
+
         for (Row row : rows) {
-            System.out.println("row: "+row.getRowNumber()+row.toString());
+            sb.append("Ред ").append(row.getRowNumber()).append(": ");
+
+            for (Seat seat : row.getSeats()) {
+                sb.append("[").append(seat.getSeatNumber()).append("]");
+            }
+
+            sb.append(System.lineSeparator());
         }
+
+        return sb.toString();
     }
 
     public int getHallNumber() {
@@ -48,6 +60,15 @@ public class Hall {
 
     public List<Row> getRows() {
         return rows;
+    }
+
+    public int getCapacity(){
+        int capacity = 0;
+        for(Row row: rows){
+            capacity += row.getSeats().size();
+        }
+
+        return capacity;
     }
 
     public boolean hasSeat(int rowNumber, int seatNumber) {

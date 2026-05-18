@@ -16,7 +16,7 @@ public class FileService {
         this.fileOpened = false;
     }
 
-    //otvarq fajla ili go suzdava
+    //отваря файла или го създава ако няма такъв
     public void open(String filePath) {
         File file = new File(filePath);
 
@@ -37,7 +37,7 @@ public class FileService {
         }
     }
 
-    //zatvarq fajla ako ima otvoren
+    //затваря файла ако има отворен
     public void close() {
         ensureFileIsOpened();
 
@@ -48,6 +48,7 @@ public class FileService {
         System.out.println("Успешно затворен файл.");
     }
 
+    //записва фанните в отвореният файл
     public void save() {
         ensureFileIsOpened();
 
@@ -57,13 +58,13 @@ public class FileService {
         } catch (IOException e) {
             System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
-
+    //запписва данните в нов файл
     public void saveAs(String newFilePath) {
         ensureFileIsOpened();
 
         try (FileWriter writer = new FileWriter(newFilePath)) {
             writer.write(content);
-            System.out.println("Успешно запазен файл: " + new File(currentFilePath).getName());
+            System.out.println("Успешно запазен файл: " + new File(newFilePath).getName());
         } catch (IOException e) {
             System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
@@ -81,7 +82,7 @@ public class FileService {
         this.content = content;
     }
 
-    //proveravq dail ima otvoren fajl
+    //проверява дали има отворен файл
     private void ensureFileIsOpened() {
         if (!fileOpened) {
             throw new IllegalStateException("Няма отворен файл.");        }

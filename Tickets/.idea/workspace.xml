@@ -6,34 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="23742dfa-3594-4efe-979f-29d48b1cdd1d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asdsad" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doan.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/AddEventCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/AddEventCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-file.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-ticket.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/CommandFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BookCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BookCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BookingsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BookingsCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BuyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/BuyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/CheckCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/CheckCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/CloseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/CloseCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/ExitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/ExitCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/FreeSeatsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/FreeSeatsCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/HelpCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/OpenCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/OpenCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/ReportCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/ReportCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/SaveAsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/SaveAsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/SaveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/SaveCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/UnBookCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/commands/ipml/UnBookCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/core/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/core/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/Hall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/contracts/InformationSystemCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/entity/contracts/InformationSystemCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/print/ConsoleInformationPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/print/ConsoleInformationPrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/print/InformationPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/print/InformationPrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/HallRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/repository/HallRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/FileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/TicketSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bg/tu_varna/f24621658/sit/services/TicketSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-ticket.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticket.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +47,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupGrunt">
+      <scroll-view-position x="0" y="0" />
+    </layout>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../../../../php-8.5.4/php.exe" />
   <component name="ProblemsViewState">
@@ -77,6 +75,7 @@
     &quot;Application.bg.tu_varna.f24621658.sit.app.Main.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
@@ -157,10 +156,25 @@
       <workItem from="1775666827130" duration="15149000" />
       <workItem from="1775712444041" duration="5016000" />
       <workItem from="1777559934757" duration="16118000" />
+      <workItem from="1778171411315" duration="5441000" />
+      <workItem from="1778425912435" duration="527000" />
+      <workItem from="1779030925838" duration="8707000" />
+      <workItem from="1779093197351" duration="2956000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

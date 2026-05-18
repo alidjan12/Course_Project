@@ -15,9 +15,12 @@ public class OpenCommand implements Command {
         String filePath = CommandUtils.joinArguments(args, 1);
         filePath = CommandUtils.removeQuotes(filePath);
 
-        context.getFileService().open(filePath);
-
-        String content = context.getFileService().getContent();
-        context.getTicketSystem().importData(content);
+        try {
+            context.getFileService().open(filePath);
+            context.getTicketSystem().importData(context.getFileService().getContent());
+        } catch (RuntimeException e) {
+            context.getPrinter().printMessage("Грешка: " + e.getMessage());
+            context.stop();
+        }
     }
 }

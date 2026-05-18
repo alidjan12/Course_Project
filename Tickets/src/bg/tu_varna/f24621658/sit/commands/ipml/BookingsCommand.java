@@ -10,20 +10,21 @@ import java.time.format.DateTimeParseException;
 public class BookingsCommand implements Command {
     @Override
     public void execute(String[] args, CommandContext context) {
-        if (args.length < 2) {
-            context.getPrinter().printMessage("Usage: bookings <date> [<name>] OR bookings <name>");
+        if (args.length == 1) {
+            context.getTicketSystem().bookings();
             return;
         }
 
         try {
             LocalDate date = LocalDate.parse(args[1]);
 
-            if (args.length >= 3) {
-                String name = CommandUtils.joinArguments(args, 2);
-                context.getTicketSystem().bookings(date, name);
-            } else {
+            if (args.length == 2) {
                 context.getTicketSystem().bookings(date);
+                return;
             }
+
+            String name = CommandUtils.joinArguments(args, 2);
+            context.getTicketSystem().bookings(date, name);
 
         } catch (DateTimeParseException e) {
             String name = CommandUtils.joinArguments(args, 1);

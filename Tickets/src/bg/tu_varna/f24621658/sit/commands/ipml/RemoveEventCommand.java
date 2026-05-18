@@ -1,0 +1,22 @@
+package bg.tu_varna.f24621658.sit.commands.ipml;
+
+import bg.tu_varna.f24621658.sit.commands.Command;
+import bg.tu_varna.f24621658.sit.commands.CommandContext;
+import bg.tu_varna.f24621658.sit.commands.CommandUtils;
+
+import java.time.LocalDate;
+
+public class RemoveEventCommand implements Command {
+    @Override
+    public void execute(String[] args, CommandContext context) {
+        if (args.length < 3) {
+            context.getPrinter().printMessage("Usage: removeevent <date> <name>");
+            return;
+        }
+
+        LocalDate date = LocalDate.parse(args[1]);
+        String name = CommandUtils.joinArguments(args, 2);
+
+        context.getTicketSystem().removeEvent(date, name);
+    }
+}

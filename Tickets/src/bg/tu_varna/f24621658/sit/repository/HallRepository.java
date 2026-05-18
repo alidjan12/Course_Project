@@ -2,8 +2,7 @@ package bg.tu_varna.f24621658.sit.repository;
 
 import bg.tu_varna.f24621658.sit.entity.Hall;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class HallRepository {
     private Map<Integer, Hall> halls;
@@ -18,5 +17,11 @@ public class HallRepository {
 
     public Hall findByNumber(int hallNumber) {
         return halls.get(hallNumber);
+    }
+
+    public List<Hall> getHalls() {
+        List<Hall> result = new ArrayList<>(halls.values());
+        result.sort(Comparator.comparingInt(Hall::getHallNumber));
+        return result;
     }
 }

@@ -49,6 +49,10 @@ public class Event {
         return tickets;
     }
 
+    public double getAttendancePercent() {
+        return (double) getSoldTickets() / hall.getCapacity() * 100;
+    }
+
 
     public void bookTicket(int row, int seat, String note){
         hall.validateSeat(row, seat); //проверка дали мястото съществува
@@ -58,7 +62,7 @@ public class Event {
         ticket.book(note);
     }
 
-    public void buyTicket(int row, int seat){
+    public String buyTicket(int row, int seat){
         hall.validateSeat(row, seat);
 
         SeatKey seatKey = new SeatKey(row,seat);
@@ -66,6 +70,7 @@ public class Event {
 
         String code = codeGenerator.generateCode(this,row,seat);
         ticket.buy(code);
+        return code;
     }
 
     public void unBookTicket(int row, int seat) {
