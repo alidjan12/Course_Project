@@ -53,6 +53,22 @@ public class Event {
         return (double) getSoldTickets() / hall.getCapacity() * 100;
     }
 
+    public int getFreeSeatsCount() {
+        int count = 0;
+
+        for (Row row : hall.getRows()) {
+            for (Seat seat : row.getSeats()) {
+                SeatKey key = new SeatKey(row.getRowNumber(), seat.getSeatNumber());
+                Ticket ticket = tickets.get(key);
+
+                if (ticket == null || ticket.getStatus() == TicketStatus.FREE) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 
     public void bookTicket(int row, int seat, String note){
         hall.validateSeat(row, seat); //проверка дали мястото съществува

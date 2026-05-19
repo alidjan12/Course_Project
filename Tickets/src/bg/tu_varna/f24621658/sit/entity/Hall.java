@@ -24,11 +24,6 @@ public class Hall {
         createRows(rowsCount,seatsPerRow);
     }
 
-    //ред = 3
-    //места = 3,4,5
-    //ред(1):1,2,3
-    //ред(2):1,2,3,4
-    //ред(3):1,2,3,4,5
     private void createRows(int rowsCount, int[] seatsPerRow) {
         for (int i = 0; i < rowsCount; i++) {
             rows.add(new Row(i + 1, seatsPerRow[i]));

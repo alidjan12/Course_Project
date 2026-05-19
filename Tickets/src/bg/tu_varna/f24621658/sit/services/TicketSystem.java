@@ -47,31 +47,47 @@ public class TicketSystem implements InformationSystemCommands {
     public void freeSeats(LocalDate date, String name) {
         Event event = eventRepo.findByNameAndDate(name, date);
 
-        if(event == null) {
+        if (event == null) {
             throw new RuntimeException("Няма такова представление!");
         }
 
         Hall hall = event.getHall();
-        Map<SeatKey,Ticket> tickets = event.getTickets();
+        Map<SeatKey, Ticket> tickets = event.getTickets();
 
         boolean hasFreeSeats = false;
 
-        for(Row row:hall.getRows()) {
-            for(Seat seat:row.getSeats()) {
+        printer.printMessage("Представление: " + event.getName());
+        printer.printMessage("Дата: " + event.getDate());
+        printer.printMessage("Зала " + hall.getHallNumber());
+        printer.printMessage("Свободни места: " + event.getFreeSeatsCount());
+
+        for (Row row : hall.getRows()) {
+            StringBuilder line = new StringBuilder();
+
+            line.append("Ред ").append(row.getRowNumber()).append(": ");
+
+            boolean hasFreeSeatsOnRow = false;
+
+            for (Seat seat : row.getSeats()) {
                 SeatKey key = new SeatKey(row.getRowNumber(), seat.getSeatNumber());
                 Ticket ticket = tickets.get(key);
 
-                if(ticket == null || ticket.getStatus()== TicketStatus.FREE) {
-                    printer.printMessage("Ред " + row.getRowNumber() +
-                            ", място " + seat.getSeatNumber());
+                if (ticket == null || ticket.getStatus() == TicketStatus.FREE) {
+                    line.append("[").append(seat.getSeatNumber()).append("]");
                     hasFreeSeats = true;
+                    hasFreeSeatsOnRow = true;
                 }
             }
+
+            if (hasFreeSeatsOnRow) {
+                printer.printMessage(line.toString());
+            }
         }
+
         if (!hasFreeSeats) {
             printer.printMessage("Няма свободни места");
         }
-     }
+    }
 
     @Override
     public void book(int row, int seat, LocalDate date, String name, String note) {
