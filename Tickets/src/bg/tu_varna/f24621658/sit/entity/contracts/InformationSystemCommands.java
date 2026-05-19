@@ -3,7 +3,9 @@ package bg.tu_varna.f24621658.sit.entity.contracts;
 import bg.tu_varna.f24621658.sit.entity.Hall;
 
 import java.time.LocalDate;
-
+/**
+ * Договор за операциите, които системата за билети трябва да поддържа.
+ */
 public interface InformationSystemCommands {
     void addEvent(LocalDate date, int hallNumber, String name);
     void freeSeats(LocalDate date, String name);

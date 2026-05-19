@@ -7,7 +7,15 @@ import bg.tu_varna.f24621658.sit.commands.CommandUtils;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Команда addevent. Чете дата, номер на зала и име на представление и ги подава към TicketSystem.
+ */
 public class AddEventCommand implements Command {
+    /**
+     * Проверява броя аргументи, преобразува датата и номера залата и добавя новото представление.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length < 4) {

@@ -2,11 +2,19 @@ package bg.tu_varna.f24621658.sit.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Модел на зала с номер и редове от места.
+ */
 public class Hall {
     private int hallNumber;
     private List<Row> rows;
 
+    /**
+     * Създава нов обект от тип Hall.
+     * @param hallNumber номерът на залата.
+     * @param rowsCount броят редове, които трябва да бъдат създадени.
+     * @param seatsPerRow масив с броя седалки за всеки ред.
+     */
     public Hall(int hallNumber, int rowsCount, int[] seatsPerRow) {
         if (hallNumber < 1) {
             throw new IllegalArgumentException("Невалиден номер за зала!");
@@ -23,13 +31,20 @@ public class Hall {
 
         createRows(rowsCount,seatsPerRow);
     }
-
+    /**
+     * Създава нов обект според подадените данни.
+     * @param rowsCount броят редове, които трябва да бъдат създадени.
+     * @param seatsPerRow масив с броя седалки за всеки ред.
+     */
     private void createRows(int rowsCount, int[] seatsPerRow) {
         for (int i = 0; i < rowsCount; i++) {
             rows.add(new Row(i + 1, seatsPerRow[i]));
         }
     }
-
+    /**
+     * Връща залата, капацитета и всички места на съответния модел.
+     * @return текущата съхранена стойност
+     */
     public String getLayout() {
         StringBuilder sb = new StringBuilder();
 
@@ -48,15 +63,24 @@ public class Hall {
 
         return sb.toString();
     }
-
+    /**
+     * Връща текущата стойност на съответното поле от модела.
+     * @return текущата съхранена стойност
+     */
     public int getHallNumber() {
         return hallNumber;
     }
-
+    /**
+     * Връща текущата стойност на съответното поле от модела.
+     * @return текущата съхранена стойност
+     */
     public List<Row> getRows() {
         return rows;
     }
-
+    /**
+     * Връща капацитета на съответния модел, като бреброява всички места.
+     * @return текущата съхранена стойност
+     */
     public int getCapacity(){
         int capacity = 0;
         for(Row row: rows){
@@ -65,7 +89,12 @@ public class Hall {
 
         return capacity;
     }
-
+    /**
+     * Проверява дали съществува подадената комбинация от ред и място в залата.
+     * @param rowNumber номерът на реда, който се проверява или съхранява.
+     * @param seatNumber номерът на седалката, която се проверява или съхранява.
+     * @return true, ако мястото съществува в залата; false, ако редът или мястото са извън обхвата
+     */
     public boolean hasSeat(int rowNumber, int seatNumber) {
         if (rowNumber < 1 || rowNumber > rows.size()) {
             return false;
@@ -76,6 +105,11 @@ public class Hall {
         return seatNumber >= 1 && seatNumber <= row.getSeats().size();
     }
 
+    /**
+     * Валидира ред и място и хвърля грешка, ако мястото не съществува.
+     * @param rowNumber номерът на реда, който се проверява или съхранява.
+     * @param seatNumber номерът на седалката, която се проверява или съхранява.
+     */
     public void validateSeat(int rowNumber, int seatNumber) {
         if (!hasSeat(rowNumber, seatNumber)) {
             throw new IllegalArgumentException(

@@ -4,8 +4,15 @@ import bg.tu_varna.f24621658.sit.commands.Command;
 import bg.tu_varna.f24621658.sit.commands.CommandContext;
 
 import java.time.LocalDate;
-
+/**
+ * Команда mostwatched. Показва представленията, сортирани по брой продадени билети.
+ */
 public class MostWatchedCommand implements Command {
+    /**
+     * Избира подходящия вариант на справката според броя подадени дати.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length == 1) {

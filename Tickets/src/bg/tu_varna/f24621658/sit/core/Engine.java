@@ -10,11 +10,17 @@ import bg.tu_varna.f24621658.sit.services.TicketSystem;
 
 import java.util.Scanner;
 
+/**
+ * Главен цикъл на програмата, който чете команди и ги изпълнява.
+ */
 public class Engine {
     private final Scanner scanner;
     private final CommandFactory commandFactory;
     private final CommandContext context;
 
+    /**
+     * Създава нов обект от тип Engine.
+     */
     public Engine() {
         this.scanner = new Scanner(System.in);
         this.commandFactory = new CommandFactory();
@@ -23,6 +29,9 @@ public class Engine {
         this.context = new CommandContext(new FileService(), new TicketSystem(printer), printer);
     }
 
+    /**
+     * Стартира основния цикъл: чете команди от конзолата, проверява дали са разрешени и ги изпълнява.
+     */
     public void start() {
         while (context.isRunning()) {
             System.out.print("> ");
@@ -55,7 +64,11 @@ public class Engine {
             }
         }
     }
-
+    /**
+     * Проверява дали дадена команда може да се изпълни според това дали има отворен файл.
+     * @param commandName името на командата, която се проверява.
+     * @return true, ако командата е позволена в текущото състояние; false в противен случай
+     */
     private boolean canExecuteCommand(String commandName) {
         boolean fileIsOpened = context.getFileService().hasOpenedFile();
 
@@ -71,7 +84,11 @@ public class Engine {
 
         return true;
     }
-
+    /**
+     * Определя кои команди са позволени преди отваряне на файл.
+     * @param commandName името на командата, която се проверява.
+     * @return true, ако командата може да се изпълни без отворен файл
+     */
     private boolean isAllowedWithoutOpenedFile(String commandName) {
         return commandName.equals("open")
                 || commandName.equals("help")

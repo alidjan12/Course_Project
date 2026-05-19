@@ -4,10 +4,14 @@ import bg.tu_varna.f24621658.sit.commands.ipml.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Създава конкретни команди според въведеното от потребителя име на команда.
+ */
 public class CommandFactory {
     private final Map<String, Command> commands;
-
+    /**
+     * Създава нов обект от тип CommandFactory.
+     */
     public CommandFactory() {
         commands = new HashMap<>();
         commands.put("open", new OpenCommand());
@@ -30,6 +34,11 @@ public class CommandFactory {
         commands.put("showhalls", new ShowHallsCommand());
     }
 
+    /**
+     * Връща стойността на съответното поле.
+     * @param inputLine пълният ред, въведен от потребителя.
+     * @return Command обект за въведената команда
+     */
     public Command getCommand(String inputLine) {
         String[] tokens = inputLine.trim().split("\\s+");
 

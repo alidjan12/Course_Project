@@ -3,7 +3,15 @@ package bg.tu_varna.f24621658.sit.commands.ipml;
 import bg.tu_varna.f24621658.sit.commands.Command;
 import bg.tu_varna.f24621658.sit.commands.CommandContext;
 
+/**
+ * Команда help. Извежда списък с поддържаните файлови и билетни команди.
+ */
 public class HelpCommand implements Command {
+    /**
+     * Извежда помощното меню с файловите и билетните команди.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length == 1) {
@@ -19,6 +27,10 @@ public class HelpCommand implements Command {
         context.getPrinter().printMessage("Usage: help OR help more");
     }
 
+    /**
+     * Извежда помощ за командите за работа с файлове.
+     * @return намереният, сглобен или генериран текст
+     */
     private String fileCommandsHelp() {
         return """
             Поддържани файлови команди:
@@ -32,7 +44,10 @@ public class HelpCommand implements Command {
             exit                 изход от програмата
             """;
     }
-
+    /**
+     * Извежда помощ за командите за представления, резервации и справки.
+     * @return намереният, сглобен или генериран текст
+     */
     private String ticketCommandsHelp() {
         return """
         Команди за билетната система:

@@ -6,7 +6,15 @@ import bg.tu_varna.f24621658.sit.commands.CommandUtils;
 
 import java.time.LocalDate;
 
+/**
+ * Команда book. Намира представление по дата и име, отделя бележката от входа и резервира избраното място.
+ */
 public class BookCommand implements Command {
+    /**
+     * Проверява входа, намира къде свършва името на представлението и къде започва бележката, след което резервира мястото.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length < 6) {
@@ -33,6 +41,7 @@ public class BookCommand implements Command {
         String foundName = null;
         String note = null;
 
+        // Пробва различни дължини на името, защото и името на представлението, и бележката могат да съдържат интервали.
         for (int endOfName = args.length - 1; endOfName >= 5; endOfName--) {
             String possibleName = CommandUtils.joinArguments(args, 4, endOfName);
 
@@ -42,7 +51,7 @@ public class BookCommand implements Command {
                 break;
             }
         }
-
+        // Ако не е намерено представление, целият текст след датата се използва за търсене на най-близко съществуващо име.
         if (foundName == null) {
             String allTextAfterDate = CommandUtils.joinArguments(args, 4);
 

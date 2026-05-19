@@ -6,8 +6,15 @@ import bg.tu_varna.f24621658.sit.commands.CommandUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-
+/**
+ * Команда bookings. Показва резервации без филтър, по дата, по име или по дата и име.
+ */
 public class BookingsCommand implements Command {
+    /**
+     * Разпознава дали първият аргумент е дата и според това извежда резервации по дата, по име, по двете или без филтър.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length == 1) {

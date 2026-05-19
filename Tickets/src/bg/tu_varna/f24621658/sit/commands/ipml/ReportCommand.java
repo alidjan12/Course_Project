@@ -4,8 +4,15 @@ import bg.tu_varna.f24621658.sit.commands.Command;
 import bg.tu_varna.f24621658.sit.commands.CommandContext;
 
 import java.time.LocalDate;
-
+/**
+ * Команда report. Генерира справка за продадените билети в период, с опционален филтър по зала.
+ */
 public class ReportCommand implements Command {
+    /**
+     * Преобразува периода и по избор номера на залата, след което генерира справка за продажбите.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length != 3 && args.length != 4) {

@@ -8,6 +8,9 @@ import bg.tu_varna.f24621658.sit.entity.TicketDetails;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Договор за класове, които визуализират информация към потребителя.
+ */
 public interface InformationPrinter {
     void printMessage(String message);
 

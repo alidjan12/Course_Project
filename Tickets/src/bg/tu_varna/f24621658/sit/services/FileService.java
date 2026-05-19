@@ -5,19 +5,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
+/**
+ * Сервиз за работа с текстов файл.
+ * Пази пътя до текущо отворения файл, неговото съдържание
+ * и информация дали в момента има отворен файл.
+ */
 public class FileService {
     private String currentFilePath;
     private String content;
     private boolean fileOpened;
 
+    /**
+     * Създава FileService без отворен файл.
+     * Началното съдържание е празен текст.
+     */
     public FileService() {
         this.currentFilePath = null;
         this.content = "";
         this.fileOpened = false;
     }
 
-    //отваря файла или го създава ако няма такъв
-
+    /**
+     * Отваря файл по подаден път.
+     * Ако файлът не съществува, го създава празен.
+     * Ако съществува, зарежда съдържанието му в паметта.
+     *
+     * @param filePath пътят до файла, който трябва да бъде отворен.
+     */
     public void open(String filePath) {
         File file = new File(filePath);
 
@@ -41,7 +55,11 @@ public class FileService {
         }
     }
 
-    //затваря файла ако има отворен
+    /**
+     * Затваря текущо отворения файл.
+     * Изчиства запазения път, съдържанието и отбелязва,
+     * че вече няма активен файл.
+     */
     public void close() {
         ensureFileIsOpened();
 
@@ -52,7 +70,10 @@ public class FileService {
         System.out.println("Успешно затворен файл.");
     }
 
-    //записва фанните в отвореният файл
+    /**
+     * Записва текущото съдържание в отворения файл.
+     * Методът работи само ако предварително има отворен файл.
+     */
     public void save() {
         ensureFileIsOpened();
 
@@ -62,7 +83,14 @@ public class FileService {
         } catch (IOException e) {
             System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
-    //запписва данните в нов файл
+
+    /**
+     * Записва текущото съдържание в нов файл.
+     * Не сменя текущо отворения файл, а само копира съдържанието
+     * към подадения нов път.
+     *
+     * @param newFilePath пътят до файла, в който ще се запише съдържанието.
+     */
     public void saveAs(String newFilePath) {
         ensureFileIsOpened();
 
@@ -73,20 +101,40 @@ public class FileService {
             System.out.println("Грешка: Файлът не може да бъде запазен.");        }
     }
 
+    /**
+     * Проверява дали има отворен файл.
+     *
+     * @return true, ако има активен файл; иначе false.
+     */
     public boolean hasOpenedFile() {
         return fileOpened;
     }
 
+    /**
+     * Връща съдържанието, заредено от текущо отворения файл.
+     *
+     * @return текстовото съдържание, което се пази в паметта.
+     */
     public String getContent() {
         return content;
     }
+
+    /**
+     * Заменя съдържанието, което ще бъде записано във файла.
+     * Методът изисква да има отворен файл.
+     *
+     * @param content новото съдържание за запис.
+     */
 
     public void setContent(String content) {
         ensureFileIsOpened();
         this.content = content;
     }
 
-    //проверява дали има отворен файл
+    /**
+     * Проверява дали има отворен файл преди операция с файл.
+     * Ако няма отворен файл, прекъсва изпълнението с грешка.
+     */
     private void ensureFileIsOpened() {
         if (!fileOpened) {
             throw new IllegalStateException("Няма отворен файл.");        }

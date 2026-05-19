@@ -6,7 +6,15 @@ import bg.tu_varna.f24621658.sit.commands.CommandUtils;
 
 import java.time.LocalDate;
 
+/**
+ * Команда unbook. Отменя резервация за конкретно място.
+ */
 public class UnBookCommand implements Command {
+    /**
+     * Преобразува ред, място и дата, проверява представлението и отменя резервацията.
+     * @param args аргументите на командата, въведени от потребителя.
+     * @param context общият контекст с достъп до TicketSystem, FileService, принтер и състоянието на приложението.
+     */
     @Override
     public void execute(String[] args, CommandContext context) {
         if (args.length < 5) {

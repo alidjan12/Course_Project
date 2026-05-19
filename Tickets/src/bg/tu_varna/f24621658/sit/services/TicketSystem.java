@@ -15,17 +15,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Comparator;
 
+/**
+ * Основен сервиз за управление на билетната система.
+ * Обединява работата с представления, зали, резервации,
+ * продажби, справки, импорт и експорт на данни.
+ */
 public class TicketSystem implements InformationSystemCommands {
     private EventRepository eventRepo;
     private HallRepository hallRepo;
     private InformationPrinter printer;
 
+    /**
+     * Създава билетна система с празни хранилища за представления и зали.
+     *
+     * @param printer обектът, чрез който системата извежда съобщения към потребителя.
+     */
     public TicketSystem(InformationPrinter printer) {
         this.eventRepo = new EventRepository();
         this.hallRepo = new HallRepository();
         this.printer = printer;
     }
 
+    /**
+     * Добавя ново представление в системата.
+     * Проверява дали залата съществува и след това записва представлението.
+     *
+     * @param date датата на представлението.
+     * @param hall номерът на залата.
+     * @param name името на представлението.
+     */
     @Override
     public void addEvent(LocalDate date, int hall, String name) {
         Hall foundHall = hallRepo.findByNumber(hall);
@@ -37,12 +55,26 @@ public class TicketSystem implements InformationSystemCommands {
         eventRepo.save(new Event(name, foundHall, date));
     }
 
+    /**
+     * Премахва представление по дата и име.
+     * След успешно премахване извежда потвърждение към потребителя.
+     *
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     */
     @Override
     public void removeEvent(LocalDate date, String name) {
         eventRepo.remove(date, name);
         printer.printMessage("Представлението е свалено успешно.");
     }
 
+    /**
+     * Извежда свободните места за конкретно представление.
+     * Показва само редовете, в които има поне едно свободно място.
+     *
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     */
     @Override
     public void freeSeats(LocalDate date, String name) {
         Event event = eventRepo.findByNameAndDate(name, date);
@@ -61,6 +93,7 @@ public class TicketSystem implements InformationSystemCommands {
         printer.printMessage("Зала " + hall.getHallNumber());
         printer.printMessage("Свободни места: " + event.getFreeSeatsCount());
 
+        // Обхождат се всички редове, за да се намерят свободните места по редове.
         for (Row row : hall.getRows()) {
             StringBuilder line = new StringBuilder();
 
@@ -68,10 +101,12 @@ public class TicketSystem implements InformationSystemCommands {
 
             boolean hasFreeSeatsOnRow = false;
 
+            // Обхождат се местата в текущия ред.
             for (Seat seat : row.getSeats()) {
                 SeatKey key = new SeatKey(row.getRowNumber(), seat.getSeatNumber());
                 Ticket ticket = tickets.get(key);
 
+                // Мястото е свободно, ако няма билет за него или билетът е със статус FREE.
                 if (ticket == null || ticket.getStatus() == TicketStatus.FREE) {
                     line.append("[").append(seat.getSeatNumber()).append("]");
                     hasFreeSeats = true;
@@ -89,6 +124,15 @@ public class TicketSystem implements InformationSystemCommands {
         }
     }
 
+    /**
+     * Резервира билет за избрано място в конкретно представление.
+     *
+     * @param row номерът на реда.
+     * @param seat номерът на мястото.
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     * @param note бележка към резервацията.
+     */
     @Override
     public void book(int row, int seat, LocalDate date, String name, String note) {
         Event  event = eventRepo.findByNameAndDate(name,date);
@@ -98,6 +142,14 @@ public class TicketSystem implements InformationSystemCommands {
         event.bookTicket(row,seat,note);
     }
 
+    /**
+     * Отменя резервация за избрано място.
+     *
+     * @param row номерът на реда.
+     * @param seat номерът на мястото.
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     */
     @Override
     public void unbook(int row, int seat, LocalDate date, String name) {
         Event event = eventRepo.findByNameAndDate(name,date);
@@ -107,6 +159,15 @@ public class TicketSystem implements InformationSystemCommands {
         event.unBookTicket(row,seat);
     }
 
+    /**
+     * Купува билет за избрано място и връща неговия уникален код.
+     *
+     * @param row номерът на реда.
+     * @param seat номерът на мястото.
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     * @return генерираният код на закупения билет.
+     */
     @Override
     public String buy(int row, int seat, LocalDate date, String name) {
         Event event = eventRepo.findByNameAndDate(name, date);
@@ -118,6 +179,12 @@ public class TicketSystem implements InformationSystemCommands {
         return event.buyTicket(row, seat);
     }
 
+    /**
+     * Проверява валидността на билет по неговия код.
+     * При валиден код извежда представлението, датата, залата, реда и мястото.
+     *
+     * @param code кодът на закупения билет.
+     */
     @Override
     public void check(String code) {
         TicketDetails details = eventRepo.findTicketDetailsByCode(code);
@@ -138,22 +205,46 @@ public class TicketSystem implements InformationSystemCommands {
         );
     }
 
+    /**
+     * Показва резервациите за точно определено представление.
+     *
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     */
     @Override
     public void bookings(LocalDate date, String name) {printBookings(eventRepo.getBookedTickets(name, date));}
 
+    /**
+     * Показва резервациите за всички представления с дадено име.
+     *
+     * @param name името на представлението.
+     */
     @Override
     public void bookings(String name) {
         printBookings(eventRepo.getBookedTickets(name));
     }
-
+    /**
+     * Показва всички резервации за конкретна дата.
+     *
+     * @param date датата, по която се филтрират резервациите.
+     */
     @Override
     public void bookings(LocalDate date) {
         printBookings(eventRepo.getBookedTickets(date));
     }
-
+    /**
+     * Показва всички направени резервации в системата.
+     */
     @Override
     public void bookings() { printBookings(eventRepo.getBookedTickets());}
 
+    /**
+     * Извежда справка за продадените билети в период и конкретна зала.
+     *
+     * @param from началната дата на периода, включително.
+     * @param to крайната дата на периода, включително.
+     * @param hallNumber номерът на залата.
+     */
     @Override
     public void report(LocalDate from, LocalDate to, int hallNumber) {
         Map<EventKey, Event> events = eventRepo.getEvents();
@@ -168,12 +259,18 @@ public class TicketSystem implements InformationSystemCommands {
                 found = true;
             }
         }
-
+        // Ако няма представление, което отговаря на филтъра, се извежда съобщение.
         if (!found) {
             printer.printMessage("Няма продадени билети за този период и зала.");
         }
     }
 
+    /**
+     * Извежда справка за продадените билети в зададен период.
+     *
+     * @param from началната дата на периода, включително.
+     * @param to крайната дата на периода, включително.
+     */
     @Override
     public void report(LocalDate from, LocalDate to) {
         Map<EventKey, Event> events = eventRepo.getEvents();
@@ -187,12 +284,18 @@ public class TicketSystem implements InformationSystemCommands {
                 found = true;
             }
         }
-
+        // Ако няма представление, което отговаря на филтъра, се извежда съобщение.
         if (!found) {
             printer.printMessage("Няма продадени билети за този период.");
         }
     }
 
+    /**
+     * Показва представленията в период, подредени по брой продадени билети.
+     *
+     * @param from началната дата на периода.
+     * @param to крайната дата на периода.
+     */
     @Override
     public void mostWatched(LocalDate from, LocalDate to) {
         List<Event> events = eventRepo.getEventsBetween(from,to);
@@ -208,6 +311,11 @@ public class TicketSystem implements InformationSystemCommands {
 
     }
 
+    /**
+     * Показва представленията след дадена дата, подредени по брой продадени билети.
+     *
+     * @param from началната дата, от която започва справката.
+     */
     @Override
     public void mostWatched(LocalDate from) {
         List<Event> events = new ArrayList<>(eventRepo.getEvents().values());
@@ -224,6 +332,9 @@ public class TicketSystem implements InformationSystemCommands {
         printer.printMostWatchedEvents(events);
     }
 
+    /**
+     * Показва всички представления, подредени по брой продадени билети.
+     */
     @Override
     public void mostWatched() {
         List<Event> events = new ArrayList<>(eventRepo.getEvents().values());
@@ -238,6 +349,12 @@ public class TicketSystem implements InformationSystemCommands {
         printer.printMostWatchedEvents(events);
     }
 
+    /**
+     * Извежда представленията с посещаемост под 10% за зададен период.
+     *
+     * @param from началната дата на периода.
+     * @param to крайната дата на периода.
+     */
     @Override
     public void lowAttendance(LocalDate from, LocalDate to) {
         List<Event> events = eventRepo.getEventsBetween(from,to);
@@ -256,22 +373,34 @@ public class TicketSystem implements InformationSystemCommands {
                 found = true;
             }
         }
-
+        // Ако няма представления с посещаемост под 10%, се извежда съобщение.
         if (!found) {
             printer.printMessage("Няма представления с посещаемост под 10%.");
         }
     }
 
+    /**
+     * Извежда всички представления, подредени по дата, име и зала.
+     */
     @Override
     public void showEvents() {
         printer.printEvents(eventRepo.getSortedEvents());
     }
 
+    /**
+     * Извежда всички налични зали.
+     */
     @Override
     public void showHalls() {
         printer.printHalls(hallRepo.getHalls());
     }
 
+    /**
+     * Преобразува текущите представления и несвободните билети в текстов формат.
+     * Свободните билети не се записват, защото могат да се възстановят по залата.
+     *
+     * @return текстово съдържание във формат TICKETS_V1.
+     */
     public String exportData(){
         StringBuilder sb = new StringBuilder();
 
@@ -285,6 +414,7 @@ public class TicketSystem implements InformationSystemCommands {
                     .append("\n");
 
             for (Ticket ticket : event.getTickets().values()) {
+                // Записват се само резервираните и закупените билети.
                 if (ticket.getStatus() == TicketStatus.FREE) {
                     continue;
                 }
@@ -303,6 +433,12 @@ public class TicketSystem implements InformationSystemCommands {
         return sb.toString();
     }
 
+    /**
+     * Зарежда представления и билети от текст във формат TICKETS_V1.
+     * Преди зареждането изчиства текущите данни от системата.
+     *
+     * @param content съдържанието, прочетено от файла.
+     */
     public void importData(String content) {
         eventRepo.clear();
 
@@ -315,7 +451,7 @@ public class TicketSystem implements InformationSystemCommands {
         if (!lines[0].trim().equals("TICKETS_V1")) {
             throw new RuntimeException("Невалиден файлов формат.");
         }
-
+        // Всеки ред се разпознава като EVENT или TICKET и се обработва отделно.
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
 
@@ -337,6 +473,12 @@ public class TicketSystem implements InformationSystemCommands {
         }
     }
 
+    /**
+     * Обработва EVENT ред от файла и създава представление.
+     *
+     * @param parts стойностите от реда, разделени със символ ';'.
+     * @param lineNumber номерът на реда във файла.
+     */
     private void importEventLine(String[] parts, int lineNumber) {
         try {
             if (parts.length != 4) {
@@ -353,6 +495,13 @@ public class TicketSystem implements InformationSystemCommands {
         }
     }
 
+    /**
+     * Обработва TICKET ред от файла и възстановява билет към представление.
+     * Ако представлението липсва, редът се пропуска със съобщение.
+     *
+     * @param parts стойностите от реда, разделени със символ ';'.
+     * @param lineNumber номерът на реда във файла.
+     */
     private void importTicketLine(String[] parts, int lineNumber) {
         try {
             if (parts.length != 8) {
@@ -369,7 +518,7 @@ public class TicketSystem implements InformationSystemCommands {
             String code = parts[7].equals("-") ? "" : parts[7];
 
             Event event = eventRepo.findByNameAndDate(eventName, date);
-
+            // Билет не може да се възстанови, ако представлението от файла липсва.
             if (event == null) {
                 printer.printMessage(
                         "Грешка на ред " + lineNumber +
@@ -384,19 +533,41 @@ public class TicketSystem implements InformationSystemCommands {
             printer.printMessage("Грешка на ред " + lineNumber + ": " + e.getMessage() + " Редът е пропуснат.");
         }
     }
-
+    /**
+     * Проверява дали съществува представление с дадени дата и име.
+     *
+     * @param date датата на представлението.
+     * @param name името на представлението.
+     * @return true, ако представлението съществува.
+     */
     public boolean eventExists(LocalDate date, String name) {
         return eventRepo.eventExists(date, name);
     }
 
+    /**
+     * Намира най-близкото име на представление за дадена дата.
+     * Използва се при грешно въведено име от потребителя.
+     *
+     * @param date датата, за която се търси представление.
+     * @param input въведеният текст.
+     * @return най-близкото име или null, ако няма представления за датата.
+     */
     public String findClosestEventName(LocalDate date, String input) {
         return eventRepo.findClosestEventName(date, input);
     }
-
+    /**
+     * Изчиства всички представления от системата.
+     */
     public void clear() {
         eventRepo.clear();
     }
 
+    /**
+     * Сортира и извежда списък с резервирани билети.
+     * Ако списъкът е празен, извежда съобщение за липса на резервации.
+     *
+     * @param tickets списъкът с резервации за извеждане.
+     */
     private void printBookings(List<TicketDetails> tickets) {
         if (tickets.isEmpty()) {
             printer.printMessage("Няма запазени билети.");
