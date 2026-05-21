@@ -1,195 +1,221 @@
 package bg.tu_varna.f24621658.sit.entity;
 
 import bg.tu_varna.f24621658.sit.entity.enums.TicketStatus;
-import bg.tu_varna.f24621658.sit.entity.keys.SeatKey;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Модел на представление със зала, дата и билети за местата в залата.
+ * Пази името на представлението, залата, датата и обект за генериране
+ * на кодове при закупуване на билети.
  */
 public class Event {
-    private String name;
-    private Hall hall;
-    private LocalDate date;
-    private Map<SeatKey,Ticket> tickets;
-    private GenerateCode codeGenerator;
+    private final String name;
+    private final Hall hall;
+    private final LocalDate date;
+
+    private final GenerateCode codeGenerator;
 
     /**
-     * Създава нов обект от тип Event.
-     * @param name името на представлението.
-     * @param hall номерът на залата за новото представление.
-     * @param date датата на представлението или датата, използвана като филтър.
+     * Създава ново представление с подадено име, зала и дата.
+     * При невалидно име, липсваща зала или липсваща дата се хвърля изключение.
+     * Залата се копира, за да има всяко представление собствени места и билети.
+     *
+     * @param name името на представлението
+     * @param hall залата, в която ще се проведе представлението
+     * @param date датата на представлението
      */
     public Event(String name, Hall hall, LocalDate date) {
-        if(name == null){
-            throw new IllegalArgumentException("name is null");
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Невалидно име!");
         }
-        if(hall == null){
+        if (hall == null) {
             throw new IllegalArgumentException("hall is null");
         }
-        if(date == null){
+        if (date == null) {
             throw new IllegalArgumentException("date is null");
         }
-
         this.name = name;
-        this.hall = hall;
+        this.hall = new Hall(hall);
         this.date = date;
-
-        tickets = new HashMap<>();
         this.codeGenerator = new GenerateCode();
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща името на представлението.
+     *
+     * @return името на представлението
      */
     public String getName() {
         return name;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща залата, в която се провежда представлението.
+     *
+     * @return залата на представлението
      */
     public Hall getHall() {
         return hall;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща датата на представлението.
+     *
+     * @return датата на представлението
      */
     public LocalDate getDate() {
         return date;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща всички билети на представлението, които не са свободни.
+     * Свободните места без билет не се добавят в резултата.
+     *
+     * @return списък с билети, които са запазени или закупени
      */
-    public Map<SeatKey, Ticket> getTickets() {
-        return tickets;
+    public List<Ticket> getTickets() {
+        List<Ticket> result = new ArrayList<>();
+        for (Seat seat : hall.getSeats()) {
+            if (!seat.isFree()) {
+                result.add(seat.getTicket());
+            }
+        }
+        return result;
     }
 
     /**
      * Изчислява процента посещаемост на представлението.
-     * Използва броя продадени билети спрямо капацитета на залата.
+     * Посещаемостта се определя според броя продадени билети спрямо капацитета на залата.
+     *
+     * @return процентът посещаемост на представлението
      */
     public double getAttendancePercent() {
         return (double) getSoldTickets() / hall.getCapacity() * 100;
     }
 
     /**
-     * Връща броя на свободните места за представлението.
-     * Обхождам всички места в залата и проверявам кои от тях нямат билет или са със статус FREE.
+     * Изчислява броя на свободните места за представлението.
+     *
+     * @return броят свободни места
      */
     public int getFreeSeatsCount() {
         int count = 0;
-
-        for (Row row : hall.getRows()) {
-            for (Seat seat : row.getSeats()) {
-                SeatKey key = new SeatKey(row.getRowNumber(), seat.getSeatNumber());
-                Ticket ticket = tickets.get(key);
-
-                if (ticket == null || ticket.getStatus() == TicketStatus.FREE) {
-                    count++;
-                }
+        for (Seat seat : hall.getSeats()) {
+            if (seat.isFree()) {
+                count++;
             }
         }
-
         return count;
     }
 
     /**
-     * Запазва билет за подаден ред и място.
-     * Ако билет за това място още не съществува, той се създава като свободен и след това се резервира.
-     * @param row номерът на реда в залата.
-     * @param seat номерът на мястото в реда.
-     * @param note бележката, която се записва към резервацията.
+     * Запазва билет за конкретно място в залата.
+     * Към резервацията се добавя подадената бележка.
+     *
+     * @param row номерът на реда
+     * @param seat номерът на мястото
+     * @param note бележката към резервацията
      */
-    public void bookTicket(int row, int seat, String note){
-        hall.validateSeat(row, seat); //проверка дали мястото съществува
-        SeatKey seatKey = new SeatKey(row,seat);
-        Ticket ticket = tickets.computeIfAbsent(seatKey, k -> new Ticket(row, seat, TicketStatus.FREE, "", ""));
-
-        ticket.book(note);
+    public void bookTicket(int row, int seat, String note) {
+        hall.findSeat(row, seat).book(this, note);
     }
 
     /**
-     * Закупува билет за подаден ред и място.
-     * Генерира уникален код за закупения билет и го връща.
-     * @param row номерът на реда в залата.
-     * @param seat номерът на мястото в реда.
-     * @return намереният, сглобен или генериран текст
+     * Закупува билет за конкретно място в залата.
+     * Генерира код за билета и го връща при успешно закупуване.
+     *
+     * @param row номерът на реда
+     * @param seat номерът на мястото
+     * @return генерираният код на закупения билет
      */
-    public String buyTicket(int row, int seat){
-        hall.validateSeat(row, seat);
-
-        SeatKey seatKey = new SeatKey(row,seat);
-        Ticket ticket = tickets.computeIfAbsent(seatKey, k -> new Ticket(row, seat, TicketStatus.FREE, "", ""));
-
-        // Генериране на кода
-        String code = codeGenerator.generateCode(this,row,seat);
-        ticket.buy(code);
+    public String buyTicket(int row, int seat) {
+        Seat selectedSeat = hall.findSeat(row, seat);
+        String code = codeGenerator.generateCode(this, selectedSeat);
+        selectedSeat.buy(this, code);
         return code;
     }
 
     /**
-     * Проверява мястото и отменя резервацията, ако билетът е резервиран.
-     * @param row номерът на реда в залата.
-     * @param seat номерът на мястото в реда.
+     * Отменя резервация за конкретно място в залата.
+     *
+     * @param row номерът на реда
+     * @param seat номерът на мястото
      */
     public void unBookTicket(int row, int seat) {
-        hall.validateSeat(row, seat);
-
-        SeatKey seatKey = new SeatKey(row, seat);
-        Ticket ticket = tickets.get(seatKey);
-
-        if (ticket == null) {
-            throw new RuntimeException("Билетът не е запазен");
-        }
-
-        ticket.unbook();
+        hall.findSeat(row, seat).unbook();
     }
 
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Изчислява броя на продадените билети за представлението.
+     *
+     * @return броят продадени билети
      */
     public int getSoldTickets() {
         int count = 0;
-
-        for (Ticket t : tickets.values()) {
-            if (t.getStatus() == TicketStatus.SOLD) {
+        for (Ticket ticket : getTickets()) {
+            if (ticket.getStatus() == TicketStatus.SOLD) {
                 count++;
             }
         }
-
         return count;
     }
 
     /**
-     * Възстановява билет от файл, като проверява мястото, статуса и дублиране за същото място.
-     * @param row номерът на реда в залата.
-     * @param seat номерът на мястото в реда.
-     * @param status статусът, който трябва да се зададе или възстанови за билета.
-     * @param note бележката, която се записва към резервацията.
-     * @param code уникалният код на закупен билет.
+     * Възстановява билет за конкретно място при зареждане на данни от файл.
+     * Използва подадените статус, бележка и код, за да възстанови състоянието на билета.
+     *
+     * @param row номерът на реда
+     * @param seat номерът на мястото
+     * @param status статусът на билета
+     * @param note бележката към билета
+     * @param code кодът на билета
      */
     public void restoreTicket(int row, int seat, TicketStatus status, String note, String code) {
-        hall.validateSeat(row, seat);
-
         if (status == null) {
             throw new IllegalArgumentException("Невалиден статус на билет.");
         }
+        hall.findSeat(row, seat).restoreTicket(this, status, note, code);
+    }
 
-        SeatKey key = new SeatKey(row, seat);
+    /**
+     * Проверява дали представлението има същите име и дата като подадените.
+     *
+     * @param name името за сравнение
+     * @param date датата за сравнение
+     * @return true, ако името и датата съвпадат; false в противен случай
+     */
+    public boolean hasSameIdentity(String name, LocalDate date) {
+        return this.name.equals(name) && this.date.equals(date);
+    }
 
-        if (tickets.containsKey(key)) {
-            throw new IllegalArgumentException("Дублиран билет за ред " + row + ", място " + seat + ".");
+    /**
+     * Проверява дали текущото представление е равно на друг обект.
+     * Две представления се считат за равни, ако имат еднакви име и дата.
+     *
+     * @param o обектът, с който се сравнява текущото представление
+     * @return true, ако обектите са равни; false в противен случай
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
+        if (!(o instanceof Event event)) {
+            return false;
+        }
+        return Objects.equals(name, event.name) && Objects.equals(date, event.date);
+    }
 
-        // Ако note или code са null, заменям ги с празен текст, за да избегна грешки.
-        Ticket ticket = new Ticket(row, seat, status, note == null ? "" : note, code == null ? "" : code);
-        tickets.put(key, ticket);
+    /**
+     * Връща хеш код на представлението.
+     * Хеш кодът се изчислява на база име и дата.
+     *
+     * @return хеш код на представлението
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, date);
     }
 }

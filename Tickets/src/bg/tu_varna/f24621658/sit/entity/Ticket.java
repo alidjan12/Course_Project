@@ -1,121 +1,149 @@
 package bg.tu_varna.f24621658.sit.entity;
 
 import bg.tu_varna.f24621658.sit.entity.enums.TicketStatus;
+
 /**
  * Модел на билет за конкретно място.
+ * Пази информация за представление, място, статус,
+ * бележка към резервацията и код при закупуване.
  */
 public class Ticket {
-    private int row;
-    private int seat;
+    private final Event event;
+    private final Seat seat;
     private TicketStatus status;
     private String note;
     private String code;
 
     /**
-     * Създава нов обект от тип Ticket.
-     * @param row номерът на реда в залата.
-     * @param seat номерът на мястото в реда.
-     * @param status статусът, който трябва да се зададе или възстанови за билета.
-     * @param note бележката, която се записва към резервацията.
-     * @param code уникалният код на закупен билет.
+     * Създава нов билет за конкретно представление и място.
+     * При липсващи задължителни данни се хвърля изключение.
+     * Ако бележката или кодът са null, се заменят с празен текст.
+     *
+     * @param event представлението, за което е билетът
+     * @param seat мястото, за което е билетът
+     * @param status текущият статус на билета
+     * @param note бележка към билета или резервацията
+     * @param code кодът на билета
      */
-    public Ticket(int row, int seat, TicketStatus status, String note, String code) {
-        this.row = row;
+    public Ticket(Event event, Seat seat, TicketStatus status, String note, String code) {
+        if (event == null) {
+            throw new IllegalArgumentException("event is null");
+        }
+        if (seat == null) {
+            throw new IllegalArgumentException("seat is null");
+        }
+        if (status == null) {
+            throw new IllegalArgumentException("status is null");
+        }
+        this.event = event;
         this.seat = seat;
         this.status = status;
-        this.note = note;
-        this.code = code;
+        this.note = note == null ? "" : note;
+        this.code = code == null ? "" : code;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща представлението, към което принадлежи билетът.
+     *
+     * @return представлението на билета
      */
-    public int getRow() {
-        return row;
+    public Event getEvent() {
+        return event;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща мястото, за което е създаден билетът.
+     *
+     * @return мястото на билета
      */
-    public int getSeat() {
+    public Seat getSeat() {
         return seat;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща текущия статус на билета.
+     *
+     * @return статусът на билета
      */
     public TicketStatus getStatus() {
         return status;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща бележката към билета.
+     *
+     * @return бележката към билета
      */
     public String getNote() {
         return note;
     }
+
     /**
-     * Връща текущата стойност на съответното поле от модела.
-     * @return текущата съхранена стойност
+     * Връща кода на билета.
+     *
+     * @return кодът на билета
      */
     public String getCode() {
         return code;
     }
+
     /**
-     * Задава нова стойност на съответното поле.
-     * @param code уникалният код на закупен билет.
+     * Задава код на билета.
+     * Ако подаденият код е null, се записва празен текст.
+     *
+     * @param code новият код на билета
      */
     public void setCode(String code) {
-        this.code = code;
+        this.code = code == null ? "" : code;
     }
+
     /**
-     * Задава нова стойност на съответното поле.
-     * @param status статусът, който трябва да се зададе или възстанови за билета.
+     * Променя статуса на билета.
+     * При подаден null статус се хвърля изключение.
+     *
+     * @param status новият статус на билета
      */
     public void setStatus(TicketStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("status is null");
+        }
         this.status = status;
     }
+
     /**
-     * Задава нова стойност на съответното поле.
-     * @param note бележката, която се записва към резервацията.
+     * Задава бележка към билета.
+     * Ако подадената бележка е null, се записва празен текст.
+     *
+     * @param note новата бележка към билета
      */
     public void setNote(String note) {
-        this.note = note;
+        this.note = note == null ? "" : note;
     }
+
     /**
-     * Резервира билет за избраното място.
-     * @param note бележката, която се записва към резервацията.
+     * Закупува билета и записва неговия код.
+     * При успешно закупуване статусът се променя на SOLD.
+     *
+     * @param code кодът на закупения билет
      */
-    public void book(String note){
-        if(status == TicketStatus.FREE){
-            this.status = TicketStatus.BOOKED;
-            this.note = note;
-        }else{
-            throw new RuntimeException("Билетът вече е резервиран");
+    public void buy(String code) {
+        if (status == TicketStatus.SOLD) {
+            throw new RuntimeException("Билетът за това място е вече купен");
         }
+        this.status = TicketStatus.SOLD;
+        this.code = code == null ? "" : code;
     }
+
     /**
-     * Купува билет за избраното място и връща генерирания код.
-     * @param code уникалният код на закупен билет.
+     * Отменя резервацията на билета.
+     * Билетът отново става свободен, а бележката и кодът се изчистват.
      */
-    public void buy(String code){
-        if(status == TicketStatus.BOOKED || status == TicketStatus.FREE){
-            this.status = TicketStatus.SOLD;
-            this.code = code;
-        }else{
-            throw new RuntimeException("Билета е вече купен");
+    public void unbook() {
+        if (status != TicketStatus.BOOKED) {
+            throw new RuntimeException("Билетът не е запазен");
         }
-    }
-    /**
-     * Отменя направена резервация за избраното място.
-     */
-    public void unbook(){
-        if(status == TicketStatus.BOOKED){
-            this.status = TicketStatus.FREE;
-            this.note = "";
-            this.code = "";
-        }else{
-            throw new RuntimeException("Билета е не е запазен");
-        }
+        this.status = TicketStatus.FREE;
+        this.note = "";
+        this.code = "";
     }
 }

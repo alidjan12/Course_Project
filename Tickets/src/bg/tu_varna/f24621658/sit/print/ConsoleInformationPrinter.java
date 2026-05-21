@@ -4,7 +4,6 @@ import bg.tu_varna.f24621658.sit.commands.CommandContext;
 import bg.tu_varna.f24621658.sit.entity.Event;
 import bg.tu_varna.f24621658.sit.entity.Hall;
 import bg.tu_varna.f24621658.sit.entity.Ticket;
-import bg.tu_varna.f24621658.sit.entity.TicketDetails;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,22 +38,22 @@ public class ConsoleInformationPrinter implements InformationPrinter {
      * @param tickets списък с детайлна информация за билетите, които трябва да бъдат изведени.
      */
     @Override
-    public void printTickets(List<TicketDetails> tickets) {
+    public void printTickets(List<Ticket> tickets) {
         if (tickets == null || tickets.isEmpty()) {
             System.out.println("Няма резултати.");
             return;
         }
 
-        for (TicketDetails details : tickets) {
-            Ticket ticket = details.getTicket();
+        for (Ticket ticket : tickets) {
+            Event event = ticket.getEvent();
             String note = ticket.getNote() == null || ticket.getNote().isBlank() ? "-" : ticket.getNote();
 
             System.out.println(
-                    details.getDate() + " | " +
-                            details.getEventName() + " | зала " +
-                            details.getHallNumber() + " | ред " +
-                            ticket.getRow() + ", място " +
-                            ticket.getSeat() + " | бележка: " +
+                    event.getDate() + " | " +
+                            event.getName() + " | зала " +
+                            event.getHall().getHallNumber() + " | ред " +
+                            ticket.getSeat().getRowNumber() + ", място " +
+                            ticket.getSeat().getSeatNumber() + " | бележка: " +
                             note
             );
         }
